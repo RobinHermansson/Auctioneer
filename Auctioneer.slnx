@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Auctioneer.API/Auctioneer.API.csproj" />
+  <Project Path="Auctioneer.Application/Auctioneer.Application.csproj" Id="ad301df0-0ed9-4c03-b970-d2c3da601a8b" />
+  <Project Path="Domain/Auctioneer.Domain.csproj" />
+  <Project Path="Infrastructure/Auctioneer.Infrastructure.csproj" />
+</Solution>
