@@ -18,6 +18,6 @@ public class LoginService
         if (user == null)
             return new LoginResponseDto() { Success = false };
 
-        return new LoginResponseDto() { Success = true };
+        return new LoginResponseDto() { Success = true, Token="dasd" };
     }
 }
