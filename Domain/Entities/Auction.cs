@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Auctioneer.Domain.Entities;
+
+namespace Domain.Entities;
 
 public class Auction
 {
@@ -9,6 +11,7 @@ public class Auction
     public required User Owner { get; set; }
     public int AuctionItemId { get; set; }
     public required AuctionItem AuctionItem { get; set; }
+    public List<Bid> Bids { get; set; } = new List<Bid>();
 
     public Auction(DateTime start, DateTime end)
     {

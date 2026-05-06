@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Auctioneer.Domain.Entities;
+
+namespace Domain.Entities;
 
 public class User
 {
@@ -9,11 +11,10 @@ public class User
     public string Password { get; set; } = string.Empty;
     public int UserRoleId { get; set; }
     public UserRole UserRole { get; set; }
+    public ICollection<Bid> Bids { get; set; } = new List<Bid>();
 
     public User()
     {
     }
-
-
 
 }
