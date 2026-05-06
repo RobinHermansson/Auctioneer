@@ -8,6 +8,7 @@ public class Auction
     public string Name { get; set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
+    public int OwnerId { get; set; }
     public required User Owner { get; set; }
     public int AuctionItemId { get; set; }
     public required AuctionItem AuctionItem { get; set; }
