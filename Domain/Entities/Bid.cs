@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Auctioneer.Domain.Entities;
+﻿namespace Domain.Entities;
 
 public class Bid
 {

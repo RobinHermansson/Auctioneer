@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260506114038_AddDescriptionToAuction")]
+    partial class AddDescriptionToAuction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,32 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Auctioneer.Domain.Entities.Bid", b =>
+                {
+                    b.Property<int>("BidId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BidId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BidderUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BidId");
+
+                    b.HasIndex("AuctionId");
+
+                    b.HasIndex("BidderUserId");
+
+                    b.ToTable("Bids");
+                });
 
             modelBuilder.Entity("Domain.Entities.Auction", b =>
                 {
@@ -50,9 +79,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("StartingPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("AuctionId");
 
                     b.HasIndex("AuctionItemId")
@@ -71,6 +97,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuctionItemId"));
 
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("AuctionType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -85,32 +114,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("AuctionItemId");
 
                     b.ToTable("AuctionItems");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Bid", b =>
-                {
-                    b.Property<int>("BidId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BidId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("AuctionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BidderUserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BidId");
-
-                    b.HasIndex("AuctionId");
-
-                    b.HasIndex("BidderUserId");
-
-                    b.ToTable("Bids");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -145,6 +148,26 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "robin.hermansson@iths.se",
+                            FirstName = "Robin",
+                            LastName = "Hermansson",
+                            Password = "",
+                            UserRoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "mikaeltobiasson@hotmail.com",
+                            FirstName = "Mikael",
+                            LastName = "Tobiasson",
+                            Password = "",
+                            UserRoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.UserRole", b =>
@@ -166,6 +189,39 @@ namespace Infrastructure.Migrations
                     b.HasKey("UserRoleId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserRoleId = 1,
+                            Description = "Administrator role, able to do anything. Possibly fly.",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            UserRoleId = 2,
+                            Description = "Your bogstandard User role. Can do just about anything, but not as much as its better part admin.",
+                            Name = "User"
+                        });
+                });
+
+            modelBuilder.Entity("Auctioneer.Domain.Entities.Bid", b =>
+                {
+                    b.HasOne("Domain.Entities.Auction", "Auction")
+                        .WithMany("Bids")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "Bidder")
+                        .WithMany("Bids")
+                        .HasForeignKey("BidderUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("Bidder");
                 });
 
             modelBuilder.Entity("Domain.Entities.Auction", b =>
@@ -185,25 +241,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("AuctionItem");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Bid", b =>
-                {
-                    b.HasOne("Domain.Entities.Auction", "Auction")
-                        .WithMany("Bids")
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", "Bidder")
-                        .WithMany("Bids")
-                        .HasForeignKey("BidderUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Auction");
-
-                    b.Navigation("Bidder");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

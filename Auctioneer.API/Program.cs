@@ -1,5 +1,6 @@
 using Auctioneer.Application.Interfaces;
 using Auctioneer.Application.Services;
+using Auctioneer.Infrastructure.Data;
 using Auctioneer.Infrastructure.Repositories;
 using Infrastructure.Data;
 
@@ -27,6 +28,12 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await DevSeeder.SeedAsync(context);
+    }
+
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {

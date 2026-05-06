@@ -1,5 +1,4 @@
-﻿using Auctioneer.Domain.Entities;
-
+﻿
 namespace Domain.Entities;
 
 public class User

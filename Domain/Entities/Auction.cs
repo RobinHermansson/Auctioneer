@@ -1,17 +1,17 @@
-﻿using Auctioneer.Domain.Entities;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 public class Auction
 {
     public int AuctionId { get; set; }
     public string Name { get; set; }
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
-    public int OwnerId { get; set; }
-    public required User Owner { get; set; }
-    public int AuctionItemId { get; set; }
-    public required AuctionItem AuctionItem { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string Description { get; set; }
+    public required int OwnerId { get; set; }
+    public User Owner { get; set; }
+    public required int AuctionItemId { get; set; }
+    public AuctionItem AuctionItem { get; set; }
+    public decimal StartingPrice { get; set; }
     public List<Bid> Bids { get; set; } = new List<Bid>();
 
     public Auction(DateTime start, DateTime end)
