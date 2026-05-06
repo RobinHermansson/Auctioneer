@@ -1,4 +1,5 @@
-﻿using Auctioneer.Application.Services;
+﻿using Auctioneer.Application.DTOs;
+using Auctioneer.Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ public class AuctionController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Auction>>> GetAllAuctions()
+    public async Task<ActionResult<IEnumerable<AuctionDto>>> GetAllAuctions()
     {
         return Ok(await _service.GetAllAuctionsAsync());
     }

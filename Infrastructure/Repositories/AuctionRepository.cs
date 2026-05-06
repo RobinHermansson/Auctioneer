@@ -16,6 +16,6 @@ public class AuctionRepository : IAuctionRepository
 
     public async Task<IEnumerable<Auction>> GetAllAuctionsAsync()
     {
-        return await _context.Auctions.Include(a => a.AuctionItem).Include(a => a.Owner).ToListAsync();
+        return await _context.Auctions.Include(a => a.AuctionItem).Include(a => a.Owner).Include(b => b.Bids).ToListAsync();
     }
 }

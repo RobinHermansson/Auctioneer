@@ -1,5 +1,6 @@
-﻿using Auctioneer.Application.Interfaces;
-using Domain.Entities;
+﻿using Auctioneer.Application.DTOs;
+using Auctioneer.Application.DTOs.Mapper;
+using Auctioneer.Application.Interfaces;
 
 namespace Auctioneer.Application.Services;
 
@@ -12,8 +13,9 @@ public class AuctionService
         _repo = repo;
     }
 
-    public async Task<IEnumerable<Auction>> GetAllAuctionsAsync()
+    public async Task<IEnumerable<AuctionDto>> GetAllAuctionsAsync()
     {
-        return await _repo.GetAllAuctionsAsync();
+        var auctions = await _repo.GetAllAuctionsAsync();
+        return auctions.Select(a => DtoMapper.AuctionToDto(a));  
     }
 }
