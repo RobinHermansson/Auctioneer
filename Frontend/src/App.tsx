@@ -1,20 +1,25 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './App.css'
-import Login from './pages/Login/Login'
+import { useState } from 'react';
+import { Route, Routes } from "react-router-dom";
+import './App.css';
+import NavBar from './components/NavBar/NavBar';
 import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
 
 function App() {
   const [token, setToken] = useState("")
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   if (!token)
-    return(<Login setToken={setToken}/>)
+    return (<Login setToken={setToken} />)
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <div className={`app-layout ${isCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}`}>
+      <NavBar isCollapsed={isCollapsed} onToggle={() => setIsCollapsed(!isCollapsed)} />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </main>
+    </div>
   )
 }
 
