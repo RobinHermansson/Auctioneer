@@ -7,6 +7,11 @@ public class AuctionService
 {
     private readonly IAuctionRepository _repo;
 
+    public AuctionService(IAuctionRepository repo)
+    {
+        _repo = repo;
+    }
+
     public async Task<IEnumerable<Auction>> GetAllAuctionsAsync()
     {
         return await _repo.GetAllAuctionsAsync();
