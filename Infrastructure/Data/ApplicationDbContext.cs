@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Auctioneer.Domain.Entities;
+using Domain.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Auction> Auctions { get; set; }
     public DbSet<AuctionItem> AuctionItems { get; set; }
+    public DbSet<Bid> Bids { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,6 +38,11 @@ public class ApplicationDbContext : DbContext
             );
 
         });
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.UserRole)
+            .WithMany(r => r.Users)
+            .HasForeignKey(u => u.UserRoleId)
+            .IsRequired();
         modelBuilder.Entity<UserRole>(userRole =>
         {
             userRole.HasKey(ur => ur.UserRoleId);
@@ -44,11 +51,6 @@ public class ApplicationDbContext : DbContext
             new UserRole() { UserRoleId = 2, Name = "User", Description = "Your bogstandard User role. Can do just about anything, but not as much as its better part admin." }
             );
         });
-        modelBuilder.Entity<User>()
-            .HasOne(u => u.UserRole)
-            .WithMany(r => r.Users)
-            .HasForeignKey(u => u.UserRoleId)
-            .IsRequired();
 
         modelBuilder.Entity<Auction>(auction =>
         {
@@ -60,6 +62,16 @@ public class ApplicationDbContext : DbContext
             .WithOne(ai => ai.Auction)
             .HasForeignKey<Auction>(a => a.AuctionItemId);
 
+        modelBuilder.Entity<Auction>()
+            .HasOne(a => a.Owner)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Bid>()
+            .HasOne(b => b.Bidder)
+            .WithMany(u => u.Bids)
+            .HasForeignKey(b => b.BidderUserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
     }
 
