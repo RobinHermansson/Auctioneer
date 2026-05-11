@@ -1,5 +1,13 @@
 const getAllAuctions = async () => {
-    const response = await fetch('https://localhost:7029/api/Auction')
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+        "https://localhost:7029/api/Auction",
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
     return response.json();
 }
 

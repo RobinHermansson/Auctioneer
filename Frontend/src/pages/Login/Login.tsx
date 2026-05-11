@@ -1,12 +1,12 @@
 import { useState } from "react";
-import "./Login.css";
 import loginUser from "../../services/loginService";
+import "./Login.css";
 
 interface LoginProps {
   setToken: (tokenString: string) => void;
 }
 
-const Login = ({setToken}: LoginProps) => {
+const Login = ({ setToken }: LoginProps) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +19,7 @@ const Login = ({setToken}: LoginProps) => {
       var response = await loginUser({ email, password });
       if (response.token)
         setToken(response.token)
+      localStorage.setItem("token", response.token!)
     } catch (err) {
       setError("Invalid email or password");
     } finally {
@@ -52,7 +53,7 @@ const Login = ({setToken}: LoginProps) => {
           {isLoading ? "Signing in..." : "Sign in."}
         </button>
         {error != "" ?
-        <p>{error}</p> : <></>}
+          <p>{error}</p> : <></>}
       </div>
     </>
   );

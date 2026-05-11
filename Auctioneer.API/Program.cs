@@ -2,13 +2,18 @@ using Auctioneer.Application.Interfaces;
 using Auctioneer.Application.Services;
 using Auctioneer.Infrastructure.Data;
 using Auctioneer.Infrastructure.Repositories;
+using Auctioneer.Infrastructure.Services;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
 builder.Services.AddCors(options =>
 {
@@ -19,6 +24,29 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+var jwtKey = builder.Configuration["JwtSecretKey"];
+
+if (string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new Exception("JWT secret key is missing.");
+}
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<LoginService>();
@@ -49,7 +77,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseCors("AllowAll");
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
