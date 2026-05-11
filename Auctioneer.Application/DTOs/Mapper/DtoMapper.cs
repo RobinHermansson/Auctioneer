@@ -12,6 +12,7 @@ public static class DtoMapper
             Description = auction.Description,
             StartDate = auction.StartDate,
             EndDate = auction.EndDate,
+            IsActive = auction.IsActive,
             StartingPrice = auction.StartingPrice,
 
             Owner = new UserDto

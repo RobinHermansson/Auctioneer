@@ -92,6 +92,7 @@ public static class DevSeeder
                     StartingPrice = 100.00m,
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(7),
+                    IsActive = true,
                     OwnerId = users[1].UserId,
                     AuctionItemId = items[0].AuctionItemId
                 };
@@ -103,6 +104,7 @@ public static class DevSeeder
                     Name = "Gaming PC",
                     Description = "A high-end gaming PC with the latest components.",
                     StartingPrice = 500.00m,
+                    IsActive = true,
                     OwnerId = users[0].UserId,
                     AuctionItemId = items[1].AuctionItemId
                 };
