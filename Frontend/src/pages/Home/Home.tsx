@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AuctionCard from "../../components/AuctionCard/AuctionCard";
-import getAllAuctions from "../../services/auctionService";
+import { getAllAuctions, getMyAuctions } from "../../services/auctionService";
 import type { Auction } from "../../types/Types";
 
 const Home = () => {
@@ -12,6 +12,12 @@ const Home = () => {
             try {
                 const response = await getAllAuctions();
                 setAllAuctions(response);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+            try {
+                const response = await getMyAuctions();
+                setUserSpecificAuctions(response);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -27,10 +33,11 @@ const Home = () => {
             <main>
                 <section>
                     <h2>My auctions</h2>
-                    <AuctionCard AuctionList={allAuctions} />
+                    <AuctionCard AuctionList={userSpecificAuctions} />
                 </section>
                 <section>
-                    <h2>New auctions</h2>
+                    <h2>All auctions</h2>
+                    <AuctionCard AuctionList={allAuctions} />
                 </section>
             </main>
         </>

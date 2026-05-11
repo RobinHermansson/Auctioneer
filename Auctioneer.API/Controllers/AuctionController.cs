@@ -3,6 +3,7 @@ using Auctioneer.Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Auctioneer.API.Controllers;
 
@@ -25,10 +26,17 @@ public class AuctionController : ControllerBase
         return Ok(await _service.GetAllAuctionsAsync());
     }
 
-    [HttpGet("{userId}")]
-    public async Task<ActionResult<IEnumerable<AuctionDto?>>> GetAllAuctionsForUser(UserDto user)
+    [HttpGet("my")]
+    public async Task<ActionResult<IEnumerable<AuctionDto?>>> GetMyAuctions()
     {
-        var auctions = await _service.GetAllAuctionsForUserAsync(user);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+        Console.WriteLine($"User id is: {userId}");
+        var auctions = await _service.GetAllAuctionsForUserAsync(userId);
         if (auctions == null || !auctions.Any())
         {
             return NotFound();

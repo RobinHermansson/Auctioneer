@@ -18,9 +18,9 @@ public class AuctionService
         var auctions = await _repo.GetAllAuctionsAsync();
         return auctions.Select(a => DtoMapper.AuctionToDto(a));  
     }
-    public async Task<IEnumerable<AuctionDto?>> GetAllAuctionsForUserAsync(UserDto user)
+    public async Task<IEnumerable<AuctionDto?>> GetAllAuctionsForUserAsync(int userId)
     {
-        var auctions = await _repo.GetAllAuctionsForUserIdAsync(user.UserId);
+        var auctions = await _repo.GetAllAuctionsForUserIdAsync(userId);
         if (auctions != null)
         {
             return auctions.Select(a => DtoMapper.AuctionToDto(a));
