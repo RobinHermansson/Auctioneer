@@ -22,4 +22,15 @@ public class AuctionController : ControllerBase
     {
         return Ok(await _service.GetAllAuctionsAsync());
     }
+
+    [HttpGet("{userId}")]
+    public async Task<ActionResult<IEnumerable<AuctionDto?>>> GetAllAuctionsForUser(UserDto user)
+    {
+        var auctions = await _service.GetAllAuctionsForUserAsync(user);
+        if (auctions == null || !auctions.Any())
+        {
+            return NotFound();
+        }
+        return Ok(auctions);
+    }
 }
