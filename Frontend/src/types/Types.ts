@@ -12,8 +12,8 @@ export interface Auction {
   auctionId: number;
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   isActive: boolean;
   startingPrice: number;
   owner: Owner;
