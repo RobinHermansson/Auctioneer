@@ -7,5 +7,5 @@ public class AuctionItemDto
     public string AuctionType { get; set; }
     public string Name { get; set; }
     public decimal Price { get; set; }
-
+    public string ImageUrl { get; set;  }
 }

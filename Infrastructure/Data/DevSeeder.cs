@@ -65,6 +65,7 @@ public static class DevSeeder
                 Name = "Vintage Clock",
                 AuctionType = "Antique",
                 Price = 100.00m,
+                ImageUrl = "/images/auctions/clock.jpg"
             };
 
             var item2 = new AuctionItem
@@ -72,6 +73,7 @@ public static class DevSeeder
                 Name = "Gaming PC",
                 AuctionType = "Electronics",
                 Price = 500.00m,
+                ImageUrl = "/images/auctions/gamingpc.jpg"
             };
 
             context.AuctionItems.AddRange(item, item2);
