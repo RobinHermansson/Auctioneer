@@ -1,18 +1,19 @@
-import { useState } from "react";
 import type { Auction } from "../../types/Types";
+import AuctionItemCard from "../AuctionItemCard/AuctionItemCard";
+import "./AuctionCard.css";
 
 interface AuctionProps {
   AuctionList: Auction[];
 }
-const AuctionCard = ({ AuctionList }: AuctionProps) => {
-  const [auctions, setAuctions] = useState<Auction[]>([]);
 
+
+const AuctionCard = ({ AuctionList }: AuctionProps) => {
   return (
-    <>
-      {AuctionList.map(item => {
-        return <p>{item.auctionId}</p>
-      })}
-    </>
+    <ul className="auction-list">
+      {AuctionList.map(theAuction => (
+        <AuctionItemCard key={theAuction.auctionId} AuctionItem={theAuction.item} />
+      ))}
+    </ul>
   );
 };
 

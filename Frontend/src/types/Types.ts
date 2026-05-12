@@ -24,7 +24,8 @@ export interface AuctionItem {
   auctionItemId: number;
   auctionType: string;
   name: string;
-  price: string;
+  price: number;
+  imageUrl: string;
 }
 export interface Bid {
   bidId: number;
