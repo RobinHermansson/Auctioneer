@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuctionCard from "../../components/AuctionCard/AuctionCard";
 import { getAllAuctions, getMyAuctions } from "../../services/auctionService";
 import type { Auction } from "../../types/Types";
@@ -7,6 +8,12 @@ import "./Home.css";
 const Home = () => {
     const [allAuctions, setAllAuctions] = useState<Auction[]>([])
     const [userSpecificAuctions, setUserSpecificAuctions] = useState<Auction[]>([]);
+    const navigate = useNavigate()
+
+    const goAuction = () => {
+        navigate("/auction")
+    }
+
     useEffect(() => {
 
         const fetchData = async () => {

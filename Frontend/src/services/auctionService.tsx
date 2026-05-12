@@ -23,3 +23,16 @@ export const getMyAuctions = async () => {
     );
     return response.json();
 }
+
+export const getAuctionById = async (id: number) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+        `https://localhost:7029/api/Auction/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    return response.json();
+}

@@ -1,12 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import type { AuctionItem } from "../../types/Types";
 import "./AuctionItemCard.css";
 
 interface AuctionItemCardProps {
     AuctionItem: AuctionItem
+    AuctionId: number
 }
-const AuctionItemCard = ({ AuctionItem }: AuctionItemCardProps) => {
+const AuctionItemCard = ({ AuctionItem, AuctionId }: AuctionItemCardProps) => {
+    const navigate = useNavigate()
+
+    const goAuction = () => {
+        navigate(`/auction/${AuctionId}`)
+    }
     return (
-        <li className="auction-item-card">
+        <li className="auction-item-card" onClick={goAuction}>
             <img
                 src={`https://localhost:7029${AuctionItem.imageUrl}`}
                 alt={AuctionItem.name}

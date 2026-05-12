@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Route, Routes } from "react-router-dom";
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
+import Auction from './pages/Auction/Auction';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 
@@ -18,6 +19,7 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/auction/:auctionId" element={<Auction />} />
         </Routes>
       </main>
     </div>

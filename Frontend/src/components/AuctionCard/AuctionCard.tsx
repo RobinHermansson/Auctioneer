@@ -11,7 +11,7 @@ const AuctionCard = ({ AuctionList }: AuctionProps) => {
   return (
     <ul className="auction-list">
       {AuctionList.map(theAuction => (
-        <AuctionItemCard key={theAuction.auctionId} AuctionItem={theAuction.item} />
+        <AuctionItemCard key={theAuction.auctionId} AuctionItem={theAuction.item} AuctionId={theAuction.auctionId} />
       ))}
     </ul>
   );
