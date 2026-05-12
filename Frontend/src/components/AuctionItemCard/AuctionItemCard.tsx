@@ -12,7 +12,7 @@ const AuctionItemCard = ({ AuctionItem }: AuctionItemCardProps) => {
                 alt={AuctionItem.name}
             ></img>
             <h4>{AuctionItem.name}</h4>
-            <p className="description">This is where the description would have gone. So lets make this a bit longer.</p>
+            <p className="description">{AuctionItem.description}</p>
             <p className="type">{AuctionItem.auctionType}</p>
             <p className="price">{AuctionItem.price} SEK</p>
         </li>

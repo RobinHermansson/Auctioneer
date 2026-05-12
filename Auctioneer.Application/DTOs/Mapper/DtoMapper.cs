@@ -28,6 +28,7 @@ public static class DtoMapper
                 Name = auction.AuctionItem.Name,
                 AuctionType = auction.AuctionItem.AuctionType,
                 ImageUrl = auction.AuctionItem.ImageUrl,
+                Description = auction.AuctionItem.Description,
                 Price = auction.AuctionItem.Price
             },
 

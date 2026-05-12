@@ -1,6 +1,6 @@
 .auction-item-card {
     max-width: 220px;
-    max-height: 300px;
+    max-height: 310px;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

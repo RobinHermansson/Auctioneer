@@ -65,6 +65,7 @@ public static class DevSeeder
                 Name = "Vintage Clock",
                 AuctionType = "Antique",
                 Price = 100.00m,
+                Description = "A beautiful vintage clock from the 19th century.",
                 ImageUrl = "/images/auctions/clock.jpg"
             };
 
@@ -73,6 +74,7 @@ public static class DevSeeder
                 Name = "Gaming PC",
                 AuctionType = "Electronics",
                 Price = 500.00m,
+                Description = "A high-end gaming PC with the latest components.",
                 ImageUrl = "/images/auctions/gamingpc.jpg"
             };
 
