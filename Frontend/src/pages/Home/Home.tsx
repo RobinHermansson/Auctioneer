@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AuctionCard from "../../components/AuctionCard/AuctionCard";
 import { getAllAuctions, getMyAuctions } from "../../services/auctionService";
 import type { Auction } from "../../types/Types";
+import "./Home.css";
 
 const Home = () => {
     const [allAuctions, setAllAuctions] = useState<Auction[]>([])
@@ -28,9 +29,9 @@ const Home = () => {
     return (
         <>
             <header>
-                <h1>Home</h1>
+                <h1 className="main-header">Auctioneer</h1>
             </header>
-            <main>
+            <main className="main-area">
                 <section>
                     <h2>My auctions</h2>
                     <AuctionCard AuctionList={userSpecificAuctions} />
