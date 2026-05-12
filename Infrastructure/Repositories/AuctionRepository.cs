@@ -25,4 +25,8 @@ public class AuctionRepository : IAuctionRepository
         return await _context.Auctions.Where(a => a.OwnerId == id).Include(a => a.AuctionItem).Include(a => a.Owner).Include(b => b.Bids).ThenInclude(bi=>bi.Bidder).ToListAsync();
 
     }
+    public async Task<Auction?> GetAuctionByIdAsync(int id)
+    {
+        return await _context.Auctions.Include(a => a.AuctionItem).Include(a => a.Owner).Include(b => b.Bids).ThenInclude(bi=>bi.Bidder).FirstOrDefaultAsync(a => a.AuctionId == id);
+    }
 }

@@ -35,12 +35,29 @@ public class AuctionController : ControllerBase
         {
             return Unauthorized();
         }
-        Console.WriteLine($"User id is: {userId}");
         var auctions = await _service.GetAllAuctionsForUserAsync(userId);
         if (auctions == null || !auctions.Any())
         {
             return NotFound();
         }
         return Ok(auctions);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<AuctionDto?>> GetAuctionById(int id)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var auction = await _service.GetAuctionByIdAsync(id);
+        if (auction == null)
+        {
+            return NotFound();
+        }
+        return Ok(auction);
     }
 }

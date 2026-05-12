@@ -27,4 +27,13 @@ public class AuctionService
         }
         return new List<AuctionDto>();
     }
+    public async Task<AuctionDto?> GetAuctionByIdAsync(int id)
+    {
+        var auction = await _repo.GetAuctionByIdAsync(id);
+        if (auction != null)
+        {
+            return DtoMapper.AuctionToDto(auction);
+        }
+        return new AuctionDto();
+    }
 }
