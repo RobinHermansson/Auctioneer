@@ -4,12 +4,14 @@ import { getAuctionById } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction } from "../../types/Types";
 import "./Auction.css";
+import BidModal from "../../components/BidModal/BidModal";
 
 
 const Auction = () => {
     const navigate = useNavigate();
     const { auctionId } = useParams();
     const [auction, setAuction] = useState<Auction>()
+    const [showModal, setShowBidModal] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
 
@@ -46,7 +48,9 @@ const Auction = () => {
                     Current price: 
                 </p>
                 <p className="auction-price">{auction?.item.price} SEK</p>
-                <button className="bid-button">Place a bid</button>
+                <button className="bid-button" onClick={() => setShowBidModal(true)}>
+                    Place a bid
+                </button>
                 <p className="auction-end-date">
                     Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
                 </p>
@@ -56,7 +60,7 @@ const Auction = () => {
 
             </aside>
             </div>
-
+            {showModal && <BidModal onClose={() => setShowBidModal(false)} />}
         </div>
     )
 }
