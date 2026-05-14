@@ -27,7 +27,7 @@ const Auction = () => {
                     alt={auction?.name}
                 />
 
-                <h2>{auction?.name}</h2>
+                <h4>Description:</h4>
 
                 <p className="description">
                     {auction?.description}
@@ -37,13 +37,17 @@ const Auction = () => {
 
             <aside className="aside-area">
 
-                <h3>{auction?.item.price} SEK</h3>
-
-                <p>
-                    Seller: {auction?.owner.firstName}
+                <h3>{auction?.name}</h3>
+                <p className="current-price-label">
+                    Current price: 
+                </p>
+                <p className="price">{auction?.item.price} SEK</p>
+                <button className="bid-button">Place a bid</button>
+                <p className="auction-end-date">
+                    Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
                 </p>
                 <p>
-                    Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
+                    Seller: {auction?.owner.firstName}
                 </p>
 
             </aside>
