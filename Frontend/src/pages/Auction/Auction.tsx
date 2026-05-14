@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAuctionById } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction } from "../../types/Types";
@@ -7,6 +7,7 @@ import "./Auction.css";
 
 
 const Auction = () => {
+    const navigate = useNavigate();
     const { auctionId } = useParams();
     const [auction, setAuction] = useState<Auction>()
     useEffect(() => {
@@ -19,29 +20,32 @@ const Auction = () => {
     }, [auctionId]);
     return (
         <div className="main-div">
+            <div className="page-header">
+                <button className="back-button" onClick={() => navigate("/")}>← Back to auctions</button>
+            </div>
 
-            <main className="main-area-auction">
+            <div className="content-row">
+                <main className="main-area-auction">
+                    <img
+                        src={`https://localhost:7029${auction?.item.imageUrl}`}
+                        alt={auction?.name}
+                    />
 
-                <img
-                    src={`https://localhost:7029${auction?.item.imageUrl}`}
-                    alt={auction?.name}
-                />
+                    <h4>Description:</h4>
 
-                <h4>Description:</h4>
-
-                <p className="description">
+                <p className="auction-description">
                     {auction?.description}
                 </p>
 
             </main>
 
-            <aside className="aside-area">
+                <aside className="aside-area">
 
                 <h3>{auction?.name}</h3>
                 <p className="current-price-label">
                     Current price: 
                 </p>
-                <p className="price">{auction?.item.price} SEK</p>
+                <p className="auction-price">{auction?.item.price} SEK</p>
                 <button className="bid-button">Place a bid</button>
                 <p className="auction-end-date">
                     Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
@@ -51,6 +55,7 @@ const Auction = () => {
                 </p>
 
             </aside>
+            </div>
 
         </div>
     )
