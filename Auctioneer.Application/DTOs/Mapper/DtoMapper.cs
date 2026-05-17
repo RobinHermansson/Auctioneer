@@ -36,6 +36,7 @@ public static class DtoMapper
             {
                 BidId = b.BidId,
                 Amount = b.Amount,
+                AuctionId = b.AuctionId,
                 Bidder = new UserDto
                 {
                     UserId = b.Bidder.UserId,
