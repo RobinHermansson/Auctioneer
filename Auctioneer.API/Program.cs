@@ -52,6 +52,7 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
+builder.Services.AddScoped<IBidRepository, BidRepository>();
 builder.Services.AddScoped<AuctionService>();
 
 var app = builder.Build();
