@@ -18,4 +18,8 @@ public class UserRepository: IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        return await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
+    }
 }
