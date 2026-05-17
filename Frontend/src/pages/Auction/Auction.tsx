@@ -1,25 +1,48 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAuctionById } from "../../services/auctionService";
+import { getAuctionById, getHighestBidById } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction } from "../../types/Types";
 import "./Auction.css";
 import BidModal from "../../components/BidModal/BidModal";
+import whoAmI from "../../services/userService";
 
 
 const Auction = () => {
     const navigate = useNavigate();
     const { auctionId } = useParams();
     const [auction, setAuction] = useState<Auction>()
+    const [userId, setUserId] = useState<number>()
+    const [highestBid, setHighestbid] = useState<number>(0)
     const [showModal, setShowBidModal] = useState(false);
+    const [canPlaceBid, setCanPlaceBid] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
 
             const response = await getAuctionById(parseInt(auctionId!));
             setAuction(response);
-        }
+
+            const userId = await whoAmI();
+            setUserId(userId);
+            if (response.owner.userId == userId){
+                setCanPlaceBid(false);
+            } else {
+                setCanPlaceBid(true);
+            }
+
+            const highestBidResponse = await getHighestBidById(parseInt(auctionId!));
+            setHighestbid(highestBidResponse);
+        }   
         fetchData();
+
     }, [auctionId]);
+    useEffect(() => {
+        const fetchHighestBid = async () => {
+            const highestBidResponse = await getHighestBidById(parseInt(auctionId!));
+            setHighestbid(highestBidResponse);
+        } 
+        fetchHighestBid();
+        }, [showModal])
     return (
         <div className="main-div">
             <div className="page-header">
@@ -47,8 +70,8 @@ const Auction = () => {
                 <p className="current-price-label">
                     Current price: 
                 </p>
-                <p className="auction-price">{auction?.item.price} SEK</p>
-                <button className="bid-button" onClick={() => setShowBidModal(true)}>
+                <p className="auction-price">{highestBid ? highestBid >0 ? highestBid : auction?.item.price : auction?.item.price} SEK</p>
+                <button disabled={!canPlaceBid} className="bid-button" onClick={() => setShowBidModal(true)}>
                     Place a bid
                 </button>
                 <p className="auction-end-date">
@@ -60,7 +83,7 @@ const Auction = () => {
 
             </aside>
             </div>
-            {showModal && <BidModal onClose={() => setShowBidModal(false)} />}
+            {showModal && <BidModal auctionCost={highestBid} auctionId={auction?.auctionId!} userId={userId!} onClose={() => setShowBidModal(false)} />}
         </div>
     )
 }

@@ -104,6 +104,10 @@
 
     font-size: 1.3rem;
 }
+.bid-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
 .auction-end-date {
     margin-top: 0;
     font-style: italic;
