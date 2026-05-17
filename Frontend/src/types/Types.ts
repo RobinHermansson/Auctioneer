@@ -40,3 +40,15 @@ export interface Owner {
   lastName: string;
   email: string;
 }
+
+export interface AddBidRequest {
+  bidderId: number;
+  auctionId : number;
+  amount: number;
+}
+
+export interface AddBidResponse{
+  success: boolean;
+  message: string;
+}
+
