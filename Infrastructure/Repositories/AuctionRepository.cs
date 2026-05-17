@@ -29,4 +29,11 @@ public class AuctionRepository : IAuctionRepository
     {
         return await _context.Auctions.Include(a => a.AuctionItem).Include(a => a.Owner).Include(b => b.Bids).ThenInclude(bi=>bi.Bidder).FirstOrDefaultAsync(a => a.AuctionId == id);
     }
+
+    public async Task UpdateAuctionAsync(Auction auction)
+    {
+        _context.Auctions.Update(auction);
+        await _context.SaveChangesAsync();
+
+    }
 }
