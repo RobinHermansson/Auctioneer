@@ -60,4 +60,48 @@ public class AuctionController : ControllerBase
         }
         return Ok(auction);
     }
+
+    [HttpGet("highest/{id}")]
+    public async Task<ActionResult<decimal?>> GetHighestBidForAuctionById(int id) 
+    { 
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+        try
+        {
+            var response = await _service.GetHighestBidByAuctionId(id);
+            return response;
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("bid")]
+    public async Task<ActionResult<BidChangeResponseDto>> AddBid(AddBidDto bidDto)
+    {
+        
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+        try
+        {
+            Console.WriteLine(bidDto.Amount);
+            var  response = await _service.AddBidAsync(bidDto);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
