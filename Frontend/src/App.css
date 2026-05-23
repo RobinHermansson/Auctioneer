@@ -27,7 +27,7 @@ body {
     margin-left: var(--sidebar-expanded);
     font-family: var(--font-family);
     padding: 60px;
-    background-color: var(--ss-bg-main);
+    background-color: transparent;
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     border: none !important;

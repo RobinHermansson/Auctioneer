@@ -38,6 +38,8 @@ const Home = () => {
             <header>
                 <h1 className="main-header">Auctioneer</h1>
             </header>
+            <div className="content-container">
+
             <main className="main-area">
                 <section>
                     <h2>My auctions</h2>
@@ -48,6 +50,7 @@ const Home = () => {
                     <AuctionCard AuctionList={allAuctions} />
                 </section>
             </main>
+            </div>
         </>
     )
 }
