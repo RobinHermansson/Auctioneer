@@ -1,6 +1,6 @@
 :root {
     --nav-bg: #000000;
-    --nav-hover: #161616;
+    --nav-hover: #3d3d3d;
     --nav-border: #222222;
     --nav-text: #ffffff;
     --nav-text-dim: #999999;
@@ -20,6 +20,7 @@
     transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     font-family: 'Inter', -apple-system, sans-serif;
     z-index: 1000;
+    justify-content: space-between;
 }
 
 .sidebar-nav ul {
@@ -39,6 +40,10 @@
     text-transform: uppercase;
     transition: all 0.4s ease;
 }
+.nav-link:hover {
+    background-color: var(--nav-hover);
+    color: var(--nav-text);
+}
 
 .sidebar.collapsed {
     width: 80px;
@@ -51,4 +56,34 @@
 
 .sidebar.collapsed .nav-link {
     justify-content: center;
+}
+.sidebar-footer {
+    padding: 1rem 0;
+    border-top: 1px solid var(--nav-border);
+}
+
+.auth-nav-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    color: var(--nav-text-dim);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-align: left;
+}
+
+.auth-nav-button:hover {
+    background-color: var(--nav-hover);
+    color: var(--nav-text);
+}
+
+.sidebar.collapsed .auth-nav-button {
+    justify-content: center;
+    padding: 14px;
 }
