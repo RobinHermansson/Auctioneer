@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Auctioneer.API.Controllers;
 
-[Authorize]
+
 [Route("api/[controller]")]
 [ApiController]
 public class AuctionController : ControllerBase
@@ -26,6 +26,7 @@ public class AuctionController : ControllerBase
         return Ok(await _service.GetAllAuctionsAsync());
     }
 
+    [Authorize]
     [HttpGet("my")]
     public async Task<ActionResult<IEnumerable<AuctionDto?>>> GetMyAuctions()
     {
@@ -36,23 +37,12 @@ public class AuctionController : ControllerBase
             return Unauthorized();
         }
         var auctions = await _service.GetAllAuctionsForUserAsync(userId);
-        if (auctions == null || !auctions.Any())
-        {
-            return NotFound();
-        }
         return Ok(auctions);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<AuctionDto?>> GetAuctionById(int id)
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (!int.TryParse(userIdClaim, out var userId))
-        {
-            return Unauthorized();
-        }
-
         var auction = await _service.GetAuctionByIdAsync(id);
         if (auction == null)
         {
@@ -64,11 +54,6 @@ public class AuctionController : ControllerBase
     [HttpGet("highest/{id}")]
     public async Task<ActionResult<decimal?>> GetHighestBidForAuctionById(int id) 
     { 
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
-        {
-            return Unauthorized();
-        }
         try
         {
             var response = await _service.GetHighestBidByAuctionId(id);
@@ -80,6 +65,7 @@ public class AuctionController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost("bid")]
     public async Task<ActionResult<BidChangeResponseDto>> AddBid(AddBidDto bidDto)
     {
@@ -104,6 +90,7 @@ public class AuctionController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
     [HttpPost("create")]
     public async Task<ActionResult<AuctionDto>> CreateAuction([FromForm] CreateAuctionDto dto, IFormFile? image)
     {
