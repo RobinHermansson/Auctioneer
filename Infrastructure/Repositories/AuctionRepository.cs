@@ -36,4 +36,16 @@ public class AuctionRepository : IAuctionRepository
         await _context.SaveChangesAsync();
 
     }
+
+    public async Task AddAuctionAsync(Auction auction)
+    {
+        try {
+            _context.Add(auction);
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"Not able to add Auction. {ex.Message}");
+        }
+        
+        await _context.SaveChangesAsync();
+    }
 }

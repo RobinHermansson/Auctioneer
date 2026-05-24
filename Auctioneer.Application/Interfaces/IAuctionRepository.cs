@@ -9,5 +9,6 @@ public interface IAuctionRepository
     Task<IEnumerable<Auction?>> GetAllAuctionsForUserIdAsync(int id);
     Task<Auction?> GetAuctionByIdAsync(int id);
     Task UpdateAuctionAsync(Auction auction);
+    Task AddAuctionAsync(Auction auction);
 
 }
