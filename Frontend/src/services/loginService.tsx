@@ -8,7 +8,6 @@ const loginUser = async (credentials: LoginRequest): Promise<LoginResponse> => {
     },
     body: JSON.stringify(credentials)
   });
-  console.log(JSON.stringify(credentials))
   if (!response.ok) {
     throw new Error("Invalid username or password");
   }
