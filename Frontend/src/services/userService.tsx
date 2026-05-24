@@ -9,7 +9,7 @@ export const whoAmI = async () => {
     return response.json();
 };
 
-const registerUser = async (RegisterRequest: RegisterUserRequest): Promise<RegisterUserResponse> => {
+export const registerUser = async (RegisterRequest: RegisterUserRequest): Promise<RegisterUserResponse> => {
     const response = await fetch("https://localhost:7029/api/User/register", {
         method: "POST",
         headers: {
@@ -19,4 +19,3 @@ const registerUser = async (RegisterRequest: RegisterUserRequest): Promise<Regis
     });
     return response.json();
 };
-export default registerUser;
