@@ -1,48 +1,39 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAuctionById, getHighestBidById } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction } from "../../types/Types";
 import "./Auction.css";
 import BidModal from "../../components/BidModal/BidModal";
-import {whoAmI} from "../../services/userService";
+import { useAuth } from "../../context/AuthContext";
 
 
 const Auction = () => {
     const navigate = useNavigate();
     const { auctionId } = useParams();
     const [auction, setAuction] = useState<Auction>()
-    const [userId, setUserId] = useState<number>()
     const [highestBid, setHighestbid] = useState<number>(0)
     const [showModal, setShowBidModal] = useState(false);
     const [canPlaceBid, setCanPlaceBid] = useState(false);
+    const {token, userId} = useAuth();
     useEffect(() => {
         const fetchData = async () => {
-
             const response = await getAuctionById(parseInt(auctionId!));
             setAuction(response);
-
-            const receivedUserId = await whoAmI();
-            setUserId(receivedUserId);
-            if (auction?.owner.userId == userId){
-                setCanPlaceBid(false);
-            } else {
-                setCanPlaceBid(true);
-            }
-
             const highestBidResponse = await getHighestBidById(parseInt(auctionId!));
             setHighestbid(highestBidResponse);
-        }   
+        };
         fetchData();
-
     }, [auctionId]);
+
     useEffect(() => {
-        const fetchHighestBid = async () => {
-            const highestBidResponse = await getHighestBidById(parseInt(auctionId!));
-            setHighestbid(highestBidResponse);
-        } 
-        fetchHighestBid();
-        }, [showModal])
+        if (!auction || !userId) {
+            console.log(`${userId}`)
+            setCanPlaceBid(false);
+            return;
+        }
+        setCanPlaceBid(auction.owner.userId !== userId);
+    }, [auction, userId]);
     return (
         <div className="main-div">
             <div className="page-header">
