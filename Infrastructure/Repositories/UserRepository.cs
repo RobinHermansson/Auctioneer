@@ -22,4 +22,20 @@ public class UserRepository: IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
     }
+    public async Task<bool> AddUserAsync(User user)
+    {
+        bool success = false;
+        try
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            success = true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+        return success;
+        
+    }
 }
