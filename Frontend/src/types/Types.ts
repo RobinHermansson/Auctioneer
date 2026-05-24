@@ -8,6 +8,17 @@ export interface LoginResponse {
   token?: string;
 }
 
+export interface RegisterUserRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+export interface RegisterUserResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface Auction {
   auctionId: number;
   name: string;
