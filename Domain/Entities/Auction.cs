@@ -10,7 +10,7 @@ public class Auction
     public string Description { get; set; }
     public required int OwnerId { get; set; }
     public User Owner { get; set; }
-    public required int AuctionItemId { get; set; }
+    public int AuctionItemId { get; set; }
     public AuctionItem AuctionItem { get; set; }
     public decimal StartingPrice { get; set; }
     public List<Bid> Bids { get; set; } = new List<Bid>();
