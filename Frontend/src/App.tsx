@@ -5,6 +5,7 @@ import NavBar from './components/NavBar/NavBar';
 import Auction from './pages/Auction/Auction';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import CreateAuction from './pages/CreateAuction/CreateAuction';
 
 function App() {
   const [token, setToken] = useState("")
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auction/:auctionId" element={<Auction />} />
+          <Route path="/create-auction" element={<CreateAuction />} />
         </Routes>
       </main>
     </div>
