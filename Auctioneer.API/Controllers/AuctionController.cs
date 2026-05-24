@@ -3,6 +3,7 @@ using Auctioneer.Application.Models;
 using Auctioneer.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Auctioneer.API.Controllers;
@@ -30,7 +31,7 @@ public class AuctionController : ControllerBase
     [HttpGet("my")]
     public async Task<ActionResult<IEnumerable<AuctionDto?>>> GetMyAuctions()
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
         if (!int.TryParse(userIdClaim, out var userId))
         {
@@ -70,7 +71,7 @@ public class AuctionController : ControllerBase
     public async Task<ActionResult<BidChangeResponseDto>> AddBid(AddBidDto bidDto)
     {
         
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
         {
             return Unauthorized();
@@ -94,7 +95,7 @@ public class AuctionController : ControllerBase
     [HttpPost("create")]
     public async Task<ActionResult<AuctionDto>> CreateAuction([FromForm] CreateAuctionDto dto, IFormFile? image)
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized();
 

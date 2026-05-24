@@ -23,7 +23,7 @@ public class JwtTokenService : ITokenService
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
             new Claim(ClaimTypes.Name, user.Email)
         };
 

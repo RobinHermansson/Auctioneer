@@ -3,6 +3,7 @@ using Auctioneer.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Auctioneer.API.Controllers;
@@ -23,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet("whoami")]
     public async Task<ActionResult<int?>> WhoAmI()
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
         if (!int.TryParse(userIdClaim, out var userId))
         {
