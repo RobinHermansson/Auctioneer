@@ -5,7 +5,7 @@ import formatAuctionEndDate from "../../services/dateService";
 import type { Auction } from "../../types/Types";
 import "./Auction.css";
 import BidModal from "../../components/BidModal/BidModal";
-import whoAmI from "../../services/userService";
+import {whoAmI} from "../../services/userService";
 
 
 const Auction = () => {
@@ -22,9 +22,9 @@ const Auction = () => {
             const response = await getAuctionById(parseInt(auctionId!));
             setAuction(response);
 
-            const userId = await whoAmI();
-            setUserId(userId);
-            if (response.owner.userId == userId){
+            const receivedUserId = await whoAmI();
+            setUserId(receivedUserId);
+            if (auction?.owner.userId == userId){
                 setCanPlaceBid(false);
             } else {
                 setCanPlaceBid(true);
@@ -80,6 +80,7 @@ const Auction = () => {
                 <p>
                     Seller: {auction?.owner.firstName}
                 </p>
+                {auction?.owner.userId === userId && <button className="delete-auction">Delete this auction</button>}
 
             </aside>
             </div>
