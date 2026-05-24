@@ -24,7 +24,7 @@ const Auction = () => {
             setHighestbid(highestBidResponse);
         };
         fetchData();
-    }, [auctionId]);
+    }, [auctionId, showModal]);
 
     useEffect(() => {
         if (!auction || !userId) {
