@@ -20,11 +20,3 @@
     display: flex;
     gap: 0.5rem;
 }
-.sign-up-span{
-    color: #007bff;
-    cursor: pointer;
-}
-.message {
-    color: #4caf50;
-    font-weight: bold;
-}

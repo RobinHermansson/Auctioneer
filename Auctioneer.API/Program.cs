@@ -54,7 +54,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 builder.Services.AddScoped<IBidRepository, BidRepository>();
 builder.Services.AddScoped<AuctionService>();
-builder.Services.AddScoped<UserService>();
 builder.Services.AddSingleton<IFileService>(_ => 
     new FileService(builder.Environment.WebRootPath));
 
