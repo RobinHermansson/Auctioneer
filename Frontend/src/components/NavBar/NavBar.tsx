@@ -12,6 +12,7 @@ const NavBar: React.FC<NavBarProps> = ({ isCollapsed, onToggle }) => {
     const navItems = [
         { path: '/', label: 'HOME' },
         { path: '/auctions', label: 'AUCTIONS' },
+        { path: '/create-auction', label: 'CREATE AUCTION' },
         { path: '/logout', label: 'LOGOUT' },
     ];
 
