@@ -111,7 +111,7 @@ public class AuctionService
             Name = dto.Title,
             Description = dto.Description,
             Price = dto.StartingPrice,
-            ImageUrl = imageUrl ?? string.Empty,
+            ImageUrl = imageUrl ?? "/images/auctions/placeholder.jpg",
 
         };
 
