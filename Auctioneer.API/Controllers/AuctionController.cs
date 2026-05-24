@@ -113,7 +113,6 @@ public class AuctionController : ControllerBase
                     ContentType = image.ContentType
                 };
             }
-            Console.WriteLine(dto);
             var result = await _service.CreateAuctionAsync(dto, fileUpload, userId);
             return CreatedAtAction(nameof(GetAuctionById), new { id = result.AuctionId }, result);
         }
