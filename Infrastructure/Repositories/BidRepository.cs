@@ -25,7 +25,7 @@ public class BidRepository : IBidRepository
         // Use an aggregate function (Max()) on the Bids DbSet
         return await _context.Bids
             .Where(b => b.AuctionId == auctionId)
-            .Select(b => b.Amount) // Select only the amount column
-            .MaxAsync();          // Execute the MAX aggregation query to the database
+            .Select(b => (decimal?)b.Amount) // Select only the amount column
+            .MaxAsync() ?? 0m;          // Execute the MAX aggregation query to the database
     }
 }
