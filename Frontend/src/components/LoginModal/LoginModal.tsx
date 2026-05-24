@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import loginUser from "../../services/loginService";
 import "./LoginModal.css";
-import registerUser from "../../services/userService";
+import {registerUser} from "../../services/userService";
 
 interface LoginModalProps {
     onClose: () => void;
