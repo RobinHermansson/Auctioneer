@@ -1,6 +1,6 @@
 ﻿using Auctioneer.Application.DTOs;
+using Auctioneer.Application.Models;
 using Auctioneer.Application.Services;
-using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -98,6 +98,37 @@ public class AuctionController : ControllerBase
                 return Ok(response);
             }
             return NotFound(response);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPost("create")]
+    public async Task<ActionResult<AuctionDto>> CreateAuction([FromForm] CreateAuctionDto dto, IFormFile? image)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+
+        try
+        {
+             FileUpload fileUpload = null;
+
+            if (image != null)
+            {
+                using var ms = new MemoryStream();
+                await image.CopyToAsync(ms);
+                fileUpload = new FileUpload
+                {
+                    Content = ms.ToArray(),
+                    FileName = image.FileName,
+                    ContentType = image.ContentType
+                };
+            }
+            Console.WriteLine(dto);
+            var result = await _service.CreateAuctionAsync(dto, fileUpload, userId);
+            return CreatedAtAction(nameof(GetAuctionById), new { id = result.AuctionId }, result);
         }
         catch (Exception ex)
         {
