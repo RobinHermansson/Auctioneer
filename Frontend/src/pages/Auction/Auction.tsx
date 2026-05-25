@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAuctionById, getHighestBidById } from "../../services/auctionService";
+import { deleteAuction, getAuctionById, getHighestBidById } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction } from "../../types/Types";
 import "./Auction.css";
 import BidModal from "../../components/BidModal/BidModal";
 import { useAuth } from "../../context/AuthContext";
+import { ConfirmCancelActionModal } from "../../components/ConfirmCancelActionModal/ConfirmCancelActionModal";
 
 
 const Auction = () => {
@@ -15,6 +16,7 @@ const Auction = () => {
     const [highestBid, setHighestbid] = useState<number>(0)
     const [showModal, setShowBidModal] = useState(false);
     const [canPlaceBid, setCanPlaceBid] = useState(false);
+    const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);    
     const {token, userId} = useAuth();
     useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +36,18 @@ const Auction = () => {
         }
         setCanPlaceBid(auction.owner.userId !== userId);
     }, [auction, userId]);
+    const handleDeleteAuctionClick = () => {
+        setShowConfirmCancelModal(true);
+
+    }
+    const handleConfirmDelete = async () => {
+        try{
+            await deleteAuction(auction!.auctionId);
+            navigate("/");
+        }catch (error) {
+            console.error("Error deleting auction:", error);
+        }
+    }
     return (
         <div className="main-div">
             <div className="page-header">
@@ -71,11 +85,21 @@ const Auction = () => {
                 <p>
                     Seller: {auction?.owner.firstName}
                 </p>
-                {auction?.owner.userId === userId && <button className="delete-auction">Delete this auction</button>}
+                {auction?.owner.userId === userId && <button className="delete-auction" onClick={handleDeleteAuctionClick}>
+                    Delete this auction
+                </button>}
 
             </aside>
             </div>
             {showModal && <BidModal auctionCost={highestBid} auctionId={auction?.auctionId!} onClose={() => setShowBidModal(false)} />}
+                {showConfirmCancelModal && <ConfirmCancelActionModal 
+                    title="Delete Auction"
+                    confirmButtonText="Yes, delete!"
+                    cancelButtonText="No. Cancel"
+                    message="Are you sure you want to delete this auction?"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={() => setShowConfirmCancelModal(false)}
+                />}
         </div>
     )
 }
