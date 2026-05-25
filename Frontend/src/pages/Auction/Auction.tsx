@@ -7,6 +7,7 @@ import "./Auction.css";
 import BidModal from "../../components/BidModal/BidModal";
 import { useAuth } from "../../context/AuthContext";
 import { ConfirmCancelActionModal } from "../../components/ConfirmCancelActionModal/ConfirmCancelActionModal";
+import { useToast } from "../../context/ToastContext";
 
 
 const Auction = () => {
@@ -18,6 +19,7 @@ const Auction = () => {
     const [canPlaceBid, setCanPlaceBid] = useState(false);
     const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);    
     const {token, userId} = useAuth();
+    const {showToast} = useToast();
     useEffect(() => {
         const fetchData = async () => {
             const response = await getAuctionById(parseInt(auctionId!));
@@ -43,8 +45,10 @@ const Auction = () => {
     const handleConfirmDelete = async () => {
         try{
             await deleteAuction(auction!.auctionId);
+            showToast("Auction deleted successfully", "success");   
             navigate("/");
         }catch (error) {
+            showToast("Error deleting auction", "error");
             console.error("Error deleting auction:", error);
         }
     }
