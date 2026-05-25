@@ -117,4 +117,16 @@ public class AuctionController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<DeleteAuctionResponseDto>> DeleteAuction(int id) 
+    {
+
+        var userClaimId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!int.TryParse(userClaimId, out var userId))
+            return Unauthorized();
+        
+        var response = await _service.DeleteAuctionAsync(id, userId);
+        return response.Success ? Ok(response) : BadRequest(response);
+    }
 }
