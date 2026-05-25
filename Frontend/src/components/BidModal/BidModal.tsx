@@ -4,16 +4,14 @@ import { addBidToAuction } from "../../services/auctionService";
 interface BidModalProps {
     auctionCost: number;
     auctionId : number;
-    userId: number;
     onClose: () => void;
 }
-const BidModal = ({ auctionCost,auctionId, userId, onClose }: BidModalProps) => {
+const BidModal = ({ auctionCost,auctionId, onClose }: BidModalProps) => {
     const [bidAmount, setBidAmount] = useState(auctionCost);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const onSubmitBid = async () => {
         const response = await addBidToAuction({
-            bidderId: userId,
             auctionId: auctionId,
             amount: bidAmount
         });

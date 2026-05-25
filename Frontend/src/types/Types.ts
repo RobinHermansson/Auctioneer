@@ -53,7 +53,6 @@ export interface Owner {
 }
 
 export interface AddBidRequest {
-  bidderId: number;
   auctionId : number;
   amount: number;
 }

@@ -75,7 +75,7 @@ const Auction = () => {
 
             </aside>
             </div>
-            {showModal && <BidModal auctionCost={highestBid} auctionId={auction?.auctionId!} userId={userId!} onClose={() => setShowBidModal(false)} />}
+            {showModal && <BidModal auctionCost={highestBid} auctionId={auction?.auctionId!} onClose={() => setShowBidModal(false)} />}
         </div>
     )
 }
