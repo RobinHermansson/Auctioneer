@@ -131,4 +131,17 @@ public class AuctionService
         return DtoMapper.AuctionToDto(createdAuction);
 
     } 
+
+    public async Task<DeleteAuctionResponseDto> DeleteAuctionAsync(int auctionId, int userId)
+    {
+        var foundAuction = await _repo.GetAuctionByIdAsync(auctionId);
+        if (foundAuction is null)
+            return new DeleteAuctionResponseDto() { Success =  false , Message=$"Could not find an auction with the Id: {auctionId}"};
+        if (foundAuction.OwnerId != userId)
+            return new DeleteAuctionResponseDto() { Success = false, Message = $"Only the owner of the auction can delete it." };
+        await _repo.DeleteAuctionAsync(foundAuction);
+        return new DeleteAuctionResponseDto() { Success = true, Message = $"Deleted auction with id: {auctionId}" };
+
+
+    }
 }
