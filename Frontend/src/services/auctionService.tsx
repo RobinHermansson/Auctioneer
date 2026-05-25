@@ -55,3 +55,14 @@ export const createAuction = async (formData: FormData): Promise<Auction> => {
     }
     return response.json();
 };
+
+export const deleteAuction = async (auctionId: number): Promise<void> => {
+    const response = await fetch(`${baseUrl}/${auctionId}`, {
+        method: "DELETE",
+        headers: authHeaders()
+    });
+    if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(errText || 'Failed to delete auction');
+    }
+};
