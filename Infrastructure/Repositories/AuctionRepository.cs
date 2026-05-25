@@ -48,4 +48,17 @@ public class AuctionRepository : IAuctionRepository
         
         await _context.SaveChangesAsync();
     }
+
+    public async Task DeleteAuctionAsync(Auction auction)
+    {
+        try
+        {
+            _context.Auctions.Remove(auction);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Not able to delete Auction. {ex.Message}");    
+        }
+    }
 }
