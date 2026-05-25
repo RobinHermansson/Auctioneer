@@ -78,13 +78,8 @@ public class AuctionController : ControllerBase
         }
         try
         {
-            Console.WriteLine(bidDto.Amount);
-            var  response = await _service.AddBidAsync(bidDto);
-            if (response.Success)
-            {
-                return Ok(response);
-            }
-            return NotFound(response);
+            var  response = await _service.AddBidAsync(bidDto, userId);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
         catch (Exception ex)
         {

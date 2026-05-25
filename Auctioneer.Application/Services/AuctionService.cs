@@ -57,12 +57,12 @@ public class AuctionService
 
     }
 
-    public async Task<BidChangeResponseDto> AddBidAsync(AddBidDto bid)
+    public async Task<BidChangeResponseDto> AddBidAsync(AddBidDto bid, int userId)
     {
         var auction = await _repo.GetAuctionByIdAsync(bid.AuctionId);
         if (auction != null)
         {
-            if (auction.Owner.UserId == bid.BidderId)
+            if (auction.Owner.UserId == userId)
             {
                 return new BidChangeResponseDto() { Message = "The owner of the Auction can not bid.", Success = false };
             }
@@ -72,7 +72,7 @@ public class AuctionService
                 return new BidChangeResponseDto() { Message = $"Bid was not higher than the highest bid: {highestBid}" , Success = false };
             }
 
-            var bidderUser = await _userRepository.GetByIdAsync(bid.BidderId);
+            var bidderUser = await _userRepository.GetByIdAsync(userId);
             if (bidderUser == null)
             {
                 return new BidChangeResponseDto() { Message = "The user does not exist." , Success = false };
