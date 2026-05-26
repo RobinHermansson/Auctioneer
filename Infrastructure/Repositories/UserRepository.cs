@@ -38,4 +38,19 @@ public class UserRepository: IUserRepository
         return success;
         
     }
+    public async Task<bool> UpdateUserAsync(User user)
+    {
+        try
+        {
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Could not update the user... {ex.Message}");
+            return false;
+        }
+
+    } 
 }
