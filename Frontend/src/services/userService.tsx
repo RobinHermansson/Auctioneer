@@ -1,6 +1,6 @@
-import type { RegisterUserRequest, RegisterUserResponse } from "../types/Types";
+import type { RegisterUserRequest, RegisterUserResponse, UpdateUserDetailsRequest, User } from "../types/Types";
 
-export const whoAmI = async () => {
+export const whoAmI = async (): Promise<User> => {
     const token = localStorage.getItem("token");
     const response = await fetch("https://localhost:7029/api/User/whoami", {
         headers: {
@@ -19,3 +19,16 @@ export const registerUser = async (RegisterRequest: RegisterUserRequest): Promis
     });
     return response.json();
 };
+
+export const updateUserDetails = async (updatedDetails: UpdateUserDetailsRequest): Promise<{ success: boolean; message: string }> => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://localhost:7029/api/User/update", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(updatedDetails)
+    });
+    return response.json();
+}
