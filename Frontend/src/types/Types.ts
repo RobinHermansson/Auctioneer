@@ -62,3 +62,15 @@ export interface AddBidResponse{
   message: string;
 }
 
+export interface User {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+export interface UpdateUserDetailsRequest {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+}
+
