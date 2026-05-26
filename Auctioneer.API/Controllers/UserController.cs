@@ -22,7 +22,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpGet("whoami")]
-    public async Task<ActionResult<int?>> WhoAmI()
+    public async Task<ActionResult<UserDto?>> WhoAmI()
     {
         var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
@@ -30,8 +30,9 @@ public class UserController : ControllerBase
         {
             return Unauthorized();
         }
+        var userDto = await _userService.GetUserByIdAsync(userId);
 
-        return Ok(userId);
+        return Ok(userDto);
     }
     [HttpPost("register")]
     public async Task<ActionResult<RegisterUserResponseDto>> RegisterUser(RegisterUserRequestDto userRegistering)
@@ -40,5 +41,16 @@ public class UserController : ControllerBase
         Console.WriteLine("Received the user request.");
         return Ok(await _userService.CreateUserAsync(userRegistering));   
 
+    }
+    [Authorize]
+    [HttpPatch("update")]
+    public async Task<ActionResult> UpdateUser(UpdateUserDto updateUser)
+    {
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+
+        var result = await _userService.UpdateUserAsync(userId, updateUser);
+        return Ok(new { Success = true, Message = "Successfully updated user. "});
     }
 }
