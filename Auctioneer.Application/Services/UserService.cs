@@ -34,4 +34,33 @@ public class UserService
         }
 
     }
+
+    public async Task<UserDto?> GetUserByIdAsync(int id)
+    {
+        var user = await _userRepo.GetByIdAsync(id);
+        if (user == null)
+            return null;
+        return new UserDto()
+        {
+            UserId = user.UserId,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email
+        };
+    }
+
+    public async Task<bool> UpdateUserAsync(int initiatingUserInt, UpdateUserDto updatedUser)
+    {
+
+        var foundUser = await _userRepo.GetByIdAsync(initiatingUserInt);
+        if (foundUser == null)
+            return false;
+        if (updatedUser.FirstName != null) foundUser.FirstName = updatedUser.FirstName;
+        if (updatedUser.LastName != null) foundUser.LastName = updatedUser.LastName;
+        if (updatedUser.Password != null && updatedUser.Password != foundUser.Password) foundUser.Password = updatedUser.Password;
+
+        await _userRepo.UpdateUserAsync(foundUser);
+        return true;
+    }
+
 }
