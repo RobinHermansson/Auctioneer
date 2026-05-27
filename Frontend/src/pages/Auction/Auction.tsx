@@ -20,6 +20,7 @@ const Auction = () => {
     const [bidsList, setBidsList] = useState<BidListing[]>([]);
     const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);    
     const [canDelete, setCanDelete] = useState(false);
+    const [canRetractBid, setCanRetractBid] = useState(false);
     const {token, userId} = useAuth();
     const {showToast} = useToast();
     useEffect(() => {
@@ -44,6 +45,7 @@ const Auction = () => {
     }, [auction, userId]);
     useEffect(() => {
         setCanDelete(bidsList.length <= 0 && auction?.owner.userId === userId);
+        setCanRetractBid(bidsList.some(bid => bid.bidderId === userId && bid.amount >= highestBid));
     }, [bidsList])
     const handleDeleteAuctionClick = () => {
         setShowConfirmCancelModal(true);
@@ -98,11 +100,25 @@ const Auction = () => {
                 <div className="bid-history-section">
                     {bidsList.length === 0 && <p>No bids placed yet.</p>}
                     <ul className="bids-list">
-                        {bidsList.map((bid) => (
-                            <li key={bid.bidId}>
-                                {bid.amount} SEK  |  At: {new Date(bid.timestamp).toLocaleString("sv-SE")} 
-                            </li>
-                        ))}
+                        {bidsList.map((bid) => {
+                            const latestBidId = bidsList.length > 0 
+                            ? bidsList[bidsList.length - 1].bidId 
+                            : null;
+                            const isOwnBid = bid.bidderId === userId && bid.bidId === latestBidId;
+                            const isUsersBid = bid.bidderId === userId;
+
+                            return (
+                                <li key={bid.bidId} className={`bid-item ${isUsersBid ? "bid-item-own" : ""}`}>
+                                    <span className="bid-amount">
+                                        {isUsersBid ? "You bid:" : "Bid:"} <strong>{bid.amount} SEK</strong>
+                                    </span>
+                                    <span className="bid-date">{new Date(bid.timestamp).toLocaleString("sv-SE")}</span>
+                                    {isOwnBid && (
+                                        <span className="retract-bid-span">Retract bid</span>
+                                    )}
+                                </li>
+                            );
+                        })} 
                     </ul>
                 </div>
                 {auction?.owner.userId === userId && 

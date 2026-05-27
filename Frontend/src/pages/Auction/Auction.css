@@ -141,6 +141,44 @@
     padding: 0.5rem;
     margin: 0;
 }
+.bid-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.9rem;
+}
+
+.bid-item:last-child {
+    border-bottom: none;
+}
+
+.bid-item-own {
+    background-color: #f0f7ff;
+    border-left: 3px solid #1565c0;
+    border-radius: 4px;
+}
+
+.bid-amount {
+    color: #111;
+}
+
+.bid-date {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.retract-bid-span {
+    color: #d32f2f;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-top: 0.15rem;
+}
+
+.retract-bid-span:hover {
+    text-decoration: underline;
+}
 .delete-auction {
     padding: 0.5rem 1rem;
 
