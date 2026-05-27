@@ -1,4 +1,4 @@
-import type { AddBidRequest, AddBidResponse, Auction } from "../types/Types";
+import type { AddBidRequest, AddBidResponse, Auction, BidListing } from "../types/Types";
 
 const baseUrl = 'https://localhost:7029/api/Auction';
 
@@ -24,6 +24,11 @@ export const getHighestBidById = async (id: number): Promise<number> => {
     const response = await fetch(`${baseUrl}/highest/${id}`);
     return response.json();
 };
+
+export const getBidsByAuctionId = async (id: number): Promise<BidListing[]> => {
+    const response = await fetch(`${baseUrl}/bids/${id}`);
+    return response.json();
+}
 
 // ── Protected endpoints (token required) ────────────────────────────────────
 
