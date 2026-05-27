@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteAuction, getAuctionById, getHighestBidById } from "../../services/auctionService";
+import { deleteAuction, getAuctionById, getBidsByAuctionId, getHighestBidById } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
-import type { Auction } from "../../types/Types";
+import type { Auction, BidListing } from "../../types/Types";
 import "./Auction.css";
 import BidModal from "../../components/BidModal/BidModal";
 import { useAuth } from "../../context/AuthContext";
@@ -17,7 +17,9 @@ const Auction = () => {
     const [highestBid, setHighestbid] = useState<number>(0)
     const [showModal, setShowBidModal] = useState(false);
     const [canPlaceBid, setCanPlaceBid] = useState(false);
+    const [bidsList, setBidsList] = useState<BidListing[]>([]);
     const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);    
+    const [canDelete, setCanDelete] = useState(false);
     const {token, userId} = useAuth();
     const {showToast} = useToast();
     useEffect(() => {
@@ -26,18 +28,24 @@ const Auction = () => {
             setAuction(response);
             const highestBidResponse = await getHighestBidById(parseInt(auctionId!));
             setHighestbid(highestBidResponse);
+            const bidsResponse = await getBidsByAuctionId(parseInt(auctionId!));
+            setBidsList(bidsResponse);
+            
         };
         fetchData();
     }, [auctionId, showModal]);
 
     useEffect(() => {
         if (!auction || !userId) {
-            console.log(`${userId}`)
+            console.log(`${userId}, ${auction?.owner.userId}`)
             setCanPlaceBid(false);
             return;
         }
         setCanPlaceBid(auction.owner.userId !== userId);
     }, [auction, userId]);
+    useEffect(() => {
+        setCanDelete(bidsList.length <= 0 && auction?.owner.userId === userId);
+    }, [bidsList])
     const handleDeleteAuctionClick = () => {
         setShowConfirmCancelModal(true);
 
@@ -77,7 +85,7 @@ const Auction = () => {
 
                 <h3>{auction?.name}</h3>
                 <p className="current-price-label">
-                    Current price: 
+                    {bidsList.length > 0 ? `Highest bid:` : `Starting price:`}
                 </p>
                 <p className="auction-price">{highestBid ? highestBid >0 ? highestBid : auction?.item.price : auction?.item.price} SEK</p>
                 <button disabled={!canPlaceBid} className="bid-button" onClick={() => setShowBidModal(true)}>
@@ -89,9 +97,23 @@ const Auction = () => {
                 <p>
                     Seller: {auction?.owner.firstName}
                 </p>
-                {auction?.owner.userId === userId && <button className="delete-auction" onClick={handleDeleteAuctionClick}>
+                <h4 className="bid-history-header">Bid history:</h4>
+                <div className="bid-history-section">
+                    {bidsList.length === 0 && <p>No bids placed yet.</p>}
+                    <ul className="bids-list">
+                        {bidsList.map((bid) => (
+                            <li key={bid.bidId}>
+                                {bid.amount} SEK  |  At: {new Date(bid.timestamp).toLocaleString("sv-SE")} 
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                {auction?.owner.userId === userId && 
+                <button className="delete-auction" disabled={!canDelete} onClick={handleDeleteAuctionClick}>
                     Delete this auction
-                </button>}
+                </button>
+                }
+                {!canDelete && auction?.owner.userId === userId && <p className="delete-auction-note">You can only delete auctions with no bids.</p>}
 
             </aside>
             </div>
