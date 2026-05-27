@@ -13,7 +13,7 @@ public class UserService
         _userRepo = userRepo;
     }
 
-    public async Task<RegisterUserResponseDto> CreateUserAsync(RegisterUserRequestDto userdto)
+    public async Task<GenericResponseDto> CreateUserAsync(RegisterUserRequestDto userdto)
     {
         var user = new User()
         {
@@ -26,11 +26,11 @@ public class UserService
 
         if (await _userRepo.AddUserAsync(user))
         {
-            return new RegisterUserResponseDto() { Success = true, Message = "Successfully created a user!"};
+            return new GenericResponseDto() { Success = true, Message = "Successfully created a user!"};
         }
         else
         {
-            return new RegisterUserResponseDto() { Success = false, Message = "Was not able to create a user!"};
+            return new GenericResponseDto() { Success = false, Message = "Was not able to create a user!"};
         }
 
     }

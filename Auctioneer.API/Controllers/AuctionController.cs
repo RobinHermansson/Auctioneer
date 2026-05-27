@@ -68,7 +68,7 @@ public class AuctionController : ControllerBase
 
     [Authorize]
     [HttpPost("bid")]
-    public async Task<ActionResult<BidChangeResponseDto>> AddBid(AddBidDto bidDto)
+    public async Task<ActionResult<GenericResponseDto>> AddBid(AddBidDto bidDto)
     {
         
         var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -119,7 +119,7 @@ public class AuctionController : ControllerBase
     }
     [Authorize]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<DeleteAuctionResponseDto>> DeleteAuction(int id) 
+    public async Task<ActionResult<GenericResponseDto>> DeleteAuction(int id) 
     {
 
         var userClaimId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;

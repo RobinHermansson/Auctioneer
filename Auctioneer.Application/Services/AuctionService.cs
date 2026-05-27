@@ -57,25 +57,25 @@ public class AuctionService
 
     }
 
-    public async Task<BidChangeResponseDto> AddBidAsync(AddBidDto bid, int userId)
+    public async Task<GenericResponseDto> AddBidAsync(AddBidDto bid, int userId)
     {
         var auction = await _repo.GetAuctionByIdAsync(bid.AuctionId);
         if (auction != null)
         {
             if (auction.Owner.UserId == userId)
             {
-                return new BidChangeResponseDto() { Message = "The owner of the Auction can not bid.", Success = false };
+                return new GenericResponseDto() { Message = "The owner of the Auction can not bid.", Success = false };
             }
 
             var highestBid = await _bidRepository.GetCurrentHighestBidAmountAsync(bid.AuctionId);
             if (highestBid >= bid.Amount) { 
-                return new BidChangeResponseDto() { Message = $"Bid was not higher than the highest bid: {highestBid}" , Success = false };
+                return new GenericResponseDto() { Message = $"Bid was not higher than the highest bid: {highestBid}" , Success = false };
             }
 
             var bidderUser = await _userRepository.GetByIdAsync(userId);
             if (bidderUser == null)
             {
-                return new BidChangeResponseDto() { Message = "The user does not exist." , Success = false };
+                return new GenericResponseDto() { Message = "The user does not exist." , Success = false };
             }
 
             try
@@ -87,16 +87,16 @@ public class AuctionService
                 await _repo.UpdateAuctionAsync(auction);
 
 
-                return new BidChangeResponseDto() { Message = "Bid successful!" , Success = true };
+                return new GenericResponseDto() { Message = "Bid successful!" , Success = true };
             }
             catch (Exception ex)
             {
-                return new BidChangeResponseDto() { Message = $"Failed to add bid: {ex.Message}", Success = false };
+                return new GenericResponseDto() { Message = $"Failed to add bid: {ex.Message}", Success = false };
             }
             
 
         }
-        return new BidChangeResponseDto() { Message = $"No auction with that Id: {bid.AuctionId} ", Success = false };
+        return new GenericResponseDto() { Message = $"No auction with that Id: {bid.AuctionId} ", Success = false };
     } 
 
     public async Task<AuctionDto> CreateAuctionAsync(CreateAuctionDto dto, FileUpload? image, int userId)
@@ -132,15 +132,15 @@ public class AuctionService
 
     } 
 
-    public async Task<DeleteAuctionResponseDto> DeleteAuctionAsync(int auctionId, int userId)
+    public async Task<GenericResponseDto> DeleteAuctionAsync(int auctionId, int userId)
     {
         var foundAuction = await _repo.GetAuctionByIdAsync(auctionId);
         if (foundAuction is null)
-            return new DeleteAuctionResponseDto() { Success =  false , Message=$"Could not find an auction with the Id: {auctionId}"};
+            return new GenericResponseDto() { Success =  false , Message=$"Could not find an auction with the Id: {auctionId}"};
         if (foundAuction.OwnerId != userId)
-            return new DeleteAuctionResponseDto() { Success = false, Message = $"Only the owner of the auction can delete it." };
+            return new GenericResponseDto() { Success = false, Message = $"Only the owner of the auction can delete it." };
         await _repo.DeleteAuctionAsync(foundAuction);
-        return new DeleteAuctionResponseDto() { Success = true, Message = $"Deleted auction with id: {auctionId}" };
+        return new GenericResponseDto() { Success = true, Message = $"Deleted auction with id: {auctionId}" };
 
 
     }

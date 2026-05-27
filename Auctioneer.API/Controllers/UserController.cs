@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         return Ok(userDto);
     }
     [HttpPost("register")]
-    public async Task<ActionResult<RegisterUserResponseDto>> RegisterUser(RegisterUserRequestDto userRegistering)
+    public async Task<ActionResult<GenericResponseDto>> RegisterUser(RegisterUserRequestDto userRegistering)
     {
 
         Console.WriteLine("Received the user request.");
