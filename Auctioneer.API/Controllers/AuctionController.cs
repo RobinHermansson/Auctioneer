@@ -129,4 +129,11 @@ public class AuctionController : ControllerBase
         var response = await _service.DeleteAuctionAsync(id, userId);
         return response.Success ? Ok(response) : BadRequest(response);
     }
+    [HttpGet("bids/{id}")]
+    public async Task<ActionResult<IEnumerable<BidFlatDto?>>> GetAllBidsForAuctionByAuctionId(int id) {
+
+        var bids = await _service.GetAllBidsForAuctionIdAsync(id);
+        return Ok(bids);
+
+    }
 }
