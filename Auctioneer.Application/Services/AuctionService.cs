@@ -144,4 +144,13 @@ public class AuctionService
 
 
     }
+
+    public async Task<IEnumerable<BidFlatDto?>> GetAllBidsForAuctionIdAsync(int id)
+    {
+        var auction = await _repo.GetAuctionByIdAsync(id);
+        if (auction is null)
+            return null;
+        var dto = auction.Bids.Select(bid => new BidFlatDto() { Amount= bid.Amount, AuctionId = bid.AuctionId, BidderId=bid.Bidder.UserId, BidId = bid.BidId, Timestamp=bid.Timestamp});
+        return dto;
+    }
 }
