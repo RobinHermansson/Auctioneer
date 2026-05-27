@@ -36,7 +36,7 @@ const BidModal = ({ auctionCost,auctionId, onClose }: BidModalProps) => {
                 </div>
                     <div className="modal-bid-section">
 
-                        <p>Currently highest bid: {auctionCost} SEK</p>
+                        <p>You must bid more than: {auctionCost} SEK</p>
                         <input 
                             className="bid-input" 
                             type="number" 
