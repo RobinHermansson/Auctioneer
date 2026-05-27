@@ -8,4 +8,5 @@ public class Bid
     public Auction Auction { get; set; }
     public int BidderUserId { get; set; }
     public User Bidder { get; set; }
+    public DateTime Timestamp { get; set; }
 }

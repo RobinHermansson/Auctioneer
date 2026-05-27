@@ -48,6 +48,9 @@ public class ApplicationDbContext : DbContext
             auction.HasKey(auction => auction.AuctionId);
                 
         });
+        modelBuilder.Entity<Auction>()
+            .Property(a => a.StartingPrice)
+            .HasPrecision(18, 2);
 
         modelBuilder.Entity<Auction>()
             .HasOne(a => a.AuctionItem)
@@ -59,11 +62,18 @@ public class ApplicationDbContext : DbContext
             .WithMany()
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<AuctionItem>()
+            .Property(a => a.Price)
+            .HasPrecision(18, 2);
+
         modelBuilder.Entity<Bid>()
             .HasOne(b => b.Bidder)
             .WithMany(u => u.Bids)
             .HasForeignKey(b => b.BidderUserId)
             .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Bid>()
+            .Property(b => b.Amount)
+            .HasPrecision(18, 2);
     }
 
 }
