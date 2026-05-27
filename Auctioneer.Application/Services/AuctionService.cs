@@ -81,7 +81,7 @@ public class AuctionService
             try
             {
 
-                var newBid = new Bid() { Amount = bid.Amount, AuctionId = bid.AuctionId, BidderUserId = bidderUser.UserId  };
+                var newBid = new Bid() { Amount = bid.Amount, AuctionId = bid.AuctionId, BidderUserId = bidderUser.UserId, Timestamp = DateTime.UtcNow };
 
                 auction.Bids.Add(newBid);
                 await _repo.UpdateAuctionAsync(auction);
