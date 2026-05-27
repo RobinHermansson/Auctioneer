@@ -73,4 +73,10 @@ export interface UpdateUserDetailsRequest {
   lastName?: string;
   password?: string;
 }
+export interface BidListing {
+  bidId: number;
+  amount: number;
+  bidderId: number;
+  timestamp: string;
+}
 
