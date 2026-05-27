@@ -30,7 +30,6 @@ const Auction = () => {
             setHighestbid(highestBidResponse);
             const bidsResponse = await getBidsByAuctionId(parseInt(auctionId!));
             setBidsList(bidsResponse);
-            
         };
         fetchData();
     }, [auctionId, showModal]);
@@ -94,10 +93,8 @@ const Auction = () => {
                 <p className="auction-end-date">
                     Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
                 </p>
-                <p>
-                    Seller: {auction?.owner.firstName}
-                </p>
                 <h4 className="bid-history-header">Bid history:</h4>
+                {bidsList.length > 0 && <p className="bid-starting-price">Starting price: {auction?.item.price} SEK</p>}
                 <div className="bid-history-section">
                     {bidsList.length === 0 && <p>No bids placed yet.</p>}
                     <ul className="bids-list">
@@ -117,7 +114,7 @@ const Auction = () => {
 
             </aside>
             </div>
-            {showModal && <BidModal auctionCost={highestBid} auctionId={auction?.auctionId!} onClose={() => setShowBidModal(false)} />}
+            {showModal && <BidModal auctionCost={highestBid <= 0 ? auction?.startingPrice! : highestBid} auctionId={auction?.auctionId!} onClose={() => setShowBidModal(false)} />}
                 {showConfirmCancelModal && <ConfirmCancelActionModal 
                     title="Delete Auction"
                     confirmButtonText="Yes, delete!"
