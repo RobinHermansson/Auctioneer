@@ -30,8 +30,10 @@ export const getBidsByAuctionId = async (id: number): Promise<BidListing[]> => {
     return response.json();
 }
 
-export const searchAuctions = async (title: string): Promise<Auction[]> => {
-    const response = await fetch(`${baseUrl}/search?title=${encodeURIComponent(title)}`);
+export const searchAuctions = async (title: string, includeClosed: boolean = false): Promise<Auction[]> => {
+    const response = await fetch(
+        `${baseUrl}/search?title=${encodeURIComponent(title)}&includeClosed=${includeClosed}`
+    );
     return response.json();
 };
 
