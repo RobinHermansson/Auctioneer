@@ -23,11 +23,14 @@ body {
 }
 
 .main-header {
-    font-size: 2.8rem;
-    font-weight: bold;
+    font-size: 1.6rem;
+    font-weight: 900;
     text-transform: uppercase;
-    margin: 0;
-    padding-left: 20px;
+    letter-spacing: 6px; /* wide tracking gives it a premium feel */
+    margin: 0 0 2rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #000; /* underline separates it from content */
+    color: #000;
 }
 .main-content {
     flex: 1;
