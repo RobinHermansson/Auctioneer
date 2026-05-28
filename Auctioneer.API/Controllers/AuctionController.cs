@@ -147,7 +147,7 @@ public class AuctionController : ControllerBase
         return response.Success ? Ok(response) : BadRequest(response);
     }
     [Authorize(Roles = "Admin")]
-    [HttpDelete("admin/deactivate/{id}")]
+    [HttpPatch("admin/deactivate/{id}")]
     public async Task<ActionResult<GenericResponseDto>> DeactivateAuction(int id) 
     {
         
