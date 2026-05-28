@@ -17,7 +17,7 @@ const Home = () => {
         const fetchAuctions = async () => {
             try {
                 const auctions = await getAllAuctions();
-                setAllOpenAuctions(auctions.filter((a: Auction) => a.isOpen));
+                setAllOpenAuctions(auctions.filter((a: Auction) => a.isOpen && !a.isDeactivated));
                 if (token && userId) {
                     setUserSpecificAuctions(auctions.filter((a: Auction) => a.owner.userId === userId));
                 }

@@ -27,6 +27,7 @@ export interface Auction {
   endDate: string;
   isActive: boolean;
   isOpen: boolean;
+  isDeactivated: boolean;
   startingPrice: number;
   owner: Owner;
   item: AuctionItem;

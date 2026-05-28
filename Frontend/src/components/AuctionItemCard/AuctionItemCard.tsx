@@ -8,10 +8,10 @@ interface AuctionItemCardProps {
     AuctionItem: AuctionItem;
     AuctionId: number;
     isOpen: boolean;
-    isActive: boolean;
+    isDeactivated: boolean;
 }
 
-const AuctionItemCard = ({ AuctionItem, AuctionId, isOpen, isActive }: AuctionItemCardProps) => {
+const AuctionItemCard = ({ AuctionItem, AuctionId, isOpen, isDeactivated }: AuctionItemCardProps) => {
     const navigate = useNavigate()
     const [auctionItemPrice, setAuctionItemPrice] = useState<number>(AuctionItem.price);
 
@@ -29,8 +29,8 @@ const AuctionItemCard = ({ AuctionItem, AuctionId, isOpen, isActive }: AuctionIt
             <li className="auction-item-card" onClick={() => navigate(`/auction/${AuctionId}`)}>
                 <div className="card-image-wrapper">
                     <img src={`https://localhost:7029${AuctionItem.imageUrl}`} alt={AuctionItem.name} />
-                    {!isActive && <span className="card-badge badge-deactivated">Deactivated</span>}
-                    {isActive && !isOpen && <span className="card-badge badge-closed">Closed</span>}
+                {isDeactivated && <span className="card-badge badge-deactivated">Deactivated</span>}
+                {!isDeactivated && !isOpen && <span className="card-badge badge-closed">Closed</span>}      
                 </div>
                 <h4>{AuctionItem.name}</h4>
                 <p className="description">{AuctionItem.description}</p>

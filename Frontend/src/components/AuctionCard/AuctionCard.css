@@ -1,6 +1,6 @@
 .auction-list {
     display: flex;
-    flex-wrap: wrap; /* ← cards wrap to next row */
+    flex-wrap: wrap; 
     gap: 1rem;
     list-style: none;
     padding: 0;
@@ -8,6 +8,6 @@
 }
 
 .auction-item-card {
-    width: 220px; /* fixed width triggers wrapping */
+    width: 220px; 
     flex-shrink: 0;
 }
