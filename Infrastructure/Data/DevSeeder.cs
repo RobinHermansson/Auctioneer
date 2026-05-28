@@ -38,7 +38,8 @@ public static class DevSeeder
                 LastName = "Hermansson",
                 Email = "r",
                 Password = "1",
-                UserRoleId = adminRole.UserRoleId
+                UserRoleId = adminRole.UserRoleId,
+                IsActive = true,
             };
 
             var userRole = await context.UserRoles.FirstAsync(r => r.Name == "User");
@@ -49,6 +50,7 @@ public static class DevSeeder
                 Email = "m",
                 UserRoleId = userRole.UserRoleId,
                 Password = "1",
+                IsActive = true,
             };
 
             context.Users.AddRange(user1, user2);
