@@ -19,10 +19,10 @@ const Auction = () => {
     const [canPlaceBid, setCanPlaceBid] = useState(false);
     const [bidsList, setBidsList] = useState<BidListing[]>([]);
     const [canDelete, setCanDelete] = useState(false);
-    const { userId } = useAuth();
+    const { isAdmin, userId } = useAuth();
     const [bidToRetract, setBidToRetract] = useState<number | null>(null);
     const {showToast} = useToast();
-    const [modalAction, setModalAction] = useState<"delete" | "retract" | null>(null);
+    const [modalAction, setModalAction] = useState<"delete" | "retract" | "deactivate" | null>(null);
     const latestBidId = bidsList.length > 0  ? bidsList[bidsList.length - 1].bidId : null;
     useEffect(() => {
         const fetchData = async () => {
@@ -75,11 +75,35 @@ const Auction = () => {
             setModalAction(null);
         }
     };
+    const handleConfirmDeactivate = async () => {
+        try {
+            await deactivateAuction(auction!.auctionId);
+            showToast("Auction deactivated successfully", "success");
+            navigate("/");
+        } catch {
+            showToast("Error deactivating auction", "error");
+        } finally {
+            setModalAction(null);
+        }
+    };
     return (
         <div className="main-div">
             <div className="page-header">
                 <button className="back-button" onClick={() => navigate("/")}>← Back to auctions</button>
-            </div>
+                
+                <div className="page-header-actions">
+                    {(isAdmin || auction?.owner.userId === userId) && (
+                        <button className="btn-edit" onClick={() => navigate(`/auction/${auctionId}/edit`)}>
+                            Edit
+                        </button>
+                    )}
+                    {isAdmin && (
+                        <button className="btn-deactivate" onClick={() => setModalAction("deactivate")}>
+                            Deactivate
+                        </button>
+                    )}
+                </div>
+            </div> 
 
             <div className="content-row">
                 <main className="main-area-auction">
@@ -98,7 +122,7 @@ const Auction = () => {
 
                 <aside className="aside-area">
 
-                <h3>{auction?.name}</h3>
+                <h3 className="auction-name">{auction?.name}</h3>
                 <p className="current-price-label">
                     {bidsList.length > 0 ? `Highest bid:` : `Starting price:`}
                 </p>
@@ -166,6 +190,16 @@ const Auction = () => {
                     cancelButtonText="Cancel"
                     message="Are you sure you want to retract this bid?"
                     onConfirm={handleConfirmRetractBid}
+                    onCancel={() => setModalAction(null)}
+                />
+            )}
+            {modalAction === "deactivate" && (
+                <ConfirmCancelActionModal
+                    title="Deactivate Auction"
+                    confirmButtonText="Yes, deactivate!"
+                    cancelButtonText="Cancel"
+                    message="Are you sure you want to deactivate this auction?"
+                    onConfirm={handleConfirmDeactivate}
                     onCancel={() => setModalAction(null)}
                 />
             )}

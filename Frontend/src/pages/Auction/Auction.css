@@ -14,7 +14,50 @@
 .page-header {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between; /* was flex-start */
+    align-items: center;
+}
+
+.page-header-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-edit {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-deactivate {
+    padding: 0.5rem 1rem;
+    background: #e65100;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-deactivate:hover {
+    background: #bf360c;
+}
+.auction-name {
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin: 0;
 }
 
 .content-row {
