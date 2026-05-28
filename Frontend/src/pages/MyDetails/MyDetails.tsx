@@ -48,6 +48,7 @@ const MyDetails = () => {
                     <h2>My Details</h2>
                 </header>
                     <section className="my-details-section">
+                    <button className="back-button" onClick={() => navigate("/")}>← Back to Home</button>
 
                         <div className="form-field">
                             <label>First name</label>
