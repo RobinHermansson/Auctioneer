@@ -11,5 +11,6 @@ public interface IAuctionRepository
     Task UpdateAuctionAsync(Auction auction);
     Task AddAuctionAsync(Auction auction);
     Task DeleteAuctionAsync(Auction auction);
+    Task DeactivateAuctionByIdAsync(int id);
 
 }

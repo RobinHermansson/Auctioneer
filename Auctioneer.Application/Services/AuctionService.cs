@@ -185,4 +185,12 @@ public class AuctionService
         await _bidRepository.DeleteByIdAsync(bidId);
         return new GenericResponseDto { Success = true, Message = "Bid retracted successfully." };
     }
+
+    public async Task<GenericResponseDto> DeactivateAuctionByIdAsync(int auctionId)
+    {
+        var auction = await _repo.GetAuctionByIdAsync(auctionId);
+        if (auction is null) return new GenericResponseDto() { Success = false, Message="Could not find the auction to delete."};
+        await _repo.DeactivateAuctionByIdAsync(auction.AuctionId);
+        return new GenericResponseDto() { Success = true, Message = "Deactivated the auction successfully"};
+    }
 }
