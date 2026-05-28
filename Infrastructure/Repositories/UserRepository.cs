@@ -20,7 +20,7 @@ public class UserRepository: IUserRepository
     }
     public async Task<User?> GetByIdAsync(int id)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
+        return await _context.Users.Include(u => u.UserRole).FirstOrDefaultAsync(x => x.UserId == id);
     }
     public async Task<bool> AddUserAsync(User user)
     {
