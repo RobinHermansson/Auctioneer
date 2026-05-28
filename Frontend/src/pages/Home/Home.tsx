@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AuctionCard from "../../components/AuctionCard/AuctionCard";
 import { getAllAuctions, getMyAuctions } from "../../services/auctionService";
 import { useAuth } from "../../context/AuthContext";
@@ -10,7 +9,6 @@ const Home = () => {
     const { token } = useAuth();
     const [allAuctions, setAllAuctions] = useState<Auction[]>([])
     const [userSpecificAuctions, setUserSpecificAuctions] = useState<Auction[]>([]);
-    const navigate = useNavigate()
 
 
 
@@ -24,13 +22,13 @@ const Home = () => {
         } else {
             setUserSpecificAuctions([]);
         }
-    }, [token]); // re-runs when user logs in or out 
+    }, [token]);
 
     return (
         <>
             <div className="content-container">
             <main className="main-area">
-                {token && 
+                {token && userSpecificAuctions.length > 0 && 
                 <section>
                     <h2>My auctions</h2>
                     <AuctionCard AuctionList={userSpecificAuctions} />
