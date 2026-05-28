@@ -1,0 +1,83 @@
+.user-management {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.user-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid #e0e0e0;
+    font-weight: 700;
+    color: #333;
+}
+
+.user-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.user-row-inactive td {
+    color: #aaa;
+}
+
+.role-badge, .status-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.role-admin {
+    background-color: #1a237e;
+    color: white;
+}
+
+.role-user {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.status-active {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-inactive {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.btn-toggle {
+    padding: 0.35rem 0.85rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-deactivate {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.btn-deactivate:hover {
+    background-color: #ffcdd2;
+}
+
+.btn-activate {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.btn-activate:hover {
+    background-color: #c8e6c9;
+}
