@@ -10,13 +10,14 @@ interface NavBarProps {
 }
 
 const NavBar: React.FC<NavBarProps> = ({ isCollapsed, onToggle }) => {
-    const { token, logout } = useAuth();
+    const { token, isAdmin, logout } = useAuth();
     const [showLoginModal, setShowLoginModal] = useState(false);
 
     const navItems = [
         { path: '/', label: 'HOME' },
         ...(token ? [{ path: '/create-auction', label: 'CREATE AUCTION' }] : []),
         ...(token ? [{ path: '/my-details', label: 'MY DETAILS' }] : []),
+        ...(token && isAdmin ? [{ path: '/admin/users', label: 'USER MANAGEMENT' }] : []),
     ];
 
     return (
