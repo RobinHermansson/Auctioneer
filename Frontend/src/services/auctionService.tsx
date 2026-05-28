@@ -79,3 +79,10 @@ export const retractBid = async (bidId: number): Promise<GenericResponse> => {
     });
     return response.json();
 };
+export const deactivateAuction = async (auctionId: number): Promise<GenericResponse> => {
+    const response = await fetch(`${baseUrl}/admin/deactivate/${auctionId}`, {
+        method: "PATCH",
+        headers: authHeaders()
+    });
+    return response.json();
+}
