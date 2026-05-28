@@ -64,7 +64,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Auctions");
+                    b.ToTable("Auctions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AuctionItem", b =>
@@ -97,7 +97,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("AuctionItemId");
 
-                    b.ToTable("AuctionItems");
+                    b.ToTable("AuctionItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Bid", b =>
@@ -127,7 +127,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("BidderUserId");
 
-                    b.ToTable("Bids");
+                    b.ToTable("Bids", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -161,7 +161,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserRoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.UserRole", b =>
@@ -182,7 +182,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("UserRoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Auction", b =>
