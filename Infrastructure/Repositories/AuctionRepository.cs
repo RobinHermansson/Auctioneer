@@ -61,4 +61,19 @@ public class AuctionRepository : IAuctionRepository
             Console.WriteLine($"Not able to delete Auction. {ex.Message}");    
         }
     }
+
+    public async Task DeactivateAuctionByIdAsync(int id) {
+        try
+        {
+            var auction = await _context.Auctions.FindAsync(id);
+            if (auction is null) return;
+            auction.IsActive = false;
+            _context.Auctions.Update(auction);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Could not deactivate auction. {ex.Message}");
+        }
+    }
 }
