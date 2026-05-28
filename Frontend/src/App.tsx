@@ -6,6 +6,7 @@ import Auction from './pages/Auction/Auction';
 import Home from './pages/Home/Home';
 import CreateAuction from './pages/CreateAuction/CreateAuction';
 import MyDetails from './pages/MyDetails/MyDetails';
+import EditAuction from './pages/EditAuction/EditAuction';
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -20,6 +21,7 @@ function App() {
             <Route path="/auction/:auctionId" element={<Auction />} />
             <Route path="/create-auction" element={<CreateAuction />} />
             <Route path="/my-details" element={<MyDetails />} />
+            <Route path="/auction/edit/:auctionId" element={<EditAuction />} />
           </Routes>
       </main>
     </div>
