@@ -7,6 +7,8 @@ import Home from './pages/Home/Home';
 import CreateAuction from './pages/CreateAuction/CreateAuction';
 import MyDetails from './pages/MyDetails/MyDetails';
 import EditAuction from './pages/EditAuction/EditAuction';
+import UserManagement from './pages/UserManagement/UserManagement';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -19,9 +21,22 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auction/:auctionId" element={<Auction />} />
-            <Route path="/create-auction" element={<CreateAuction />} />
-            <Route path="/my-details" element={<MyDetails />} />
-            <Route path="/auction/edit/:auctionId" element={<EditAuction />} />
+
+            {/* Requires login */}
+            <Route path="/create-auction" element={
+                <ProtectedRoute><CreateAuction /></ProtectedRoute>
+            } />
+            <Route path="/my-details" element={
+                <ProtectedRoute><MyDetails /></ProtectedRoute>
+            } />
+            <Route path="/auction/edit/:auctionId" element={
+                <ProtectedRoute><EditAuction /></ProtectedRoute>
+            } />
+
+            {/* Requires admin */}
+            <Route path="/admin/users" element={
+                <ProtectedRoute requireAdmin><UserManagement /></ProtectedRoute>
+            } /> 
           </Routes>
       </main>
     </div>
