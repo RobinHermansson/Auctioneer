@@ -69,6 +69,7 @@ const CreateAuction = () => {
 
     return (
         <div className="create-auction-container">
+            <button className="back-button" onClick={() => navigate("/")}>← Back to Home</button>
             <h2>Create Auction</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit} className="create-auction-form">
