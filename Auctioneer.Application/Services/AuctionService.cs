@@ -153,4 +153,28 @@ public class AuctionService
         var dto = auction.Bids.Select(bid => new BidFlatDto() { Amount= bid.Amount, AuctionId = bid.AuctionId, BidderId=bid.Bidder.UserId, BidId = bid.BidId, Timestamp=bid.Timestamp});
         return dto;
     }
+    public async Task<GenericResponseDto> RetractBidAsync(int bidId, int userId)
+    {
+        var bid = await _bidRepository.GetByIdAsync(bidId);
+        if (bid == null)
+            return new GenericResponseDto { Success = false, Message = "Bid not found." };
+
+        if (bid.BidderUserId != userId)
+            return new GenericResponseDto { Success = false, Message = "You can only retract your own bids." };
+
+        var auction = await _repo.GetAuctionByIdAsync(bid.AuctionId);
+        if (auction == null)
+            return new GenericResponseDto { Success = false, Message = "Auction not found." };
+
+        if (auction.EndDate <= DateTime.UtcNow)
+            return new GenericResponseDto { Success = false, Message = "Cannot retract a bid on a closed auction." };
+
+        // Check it's the latest bid
+        var latestBid = await _bidRepository.GetLatestBidForAuctionAsync(bid.AuctionId);
+        if (latestBid?.BidId != bidId)
+            return new GenericResponseDto { Success = false, Message = "You can only retract the latest bid." }; 
+
+        await _bidRepository.DeleteByIdAsync(bidId);
+        return new GenericResponseDto { Success = true, Message = "Bid retracted successfully." };
+    }
 }
