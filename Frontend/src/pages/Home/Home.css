@@ -70,6 +70,27 @@ section h2 {
 .search-clear:hover {
     color: #000;
 }
+.search-input-row {
+    position: relative;
+    width: 100%;
+}
+
+.search-option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.search-option-label input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
 
 .no-results {
     color: #888;

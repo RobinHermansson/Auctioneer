@@ -12,6 +12,7 @@ const Home = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<Auction[]>([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [includeClosedAuctions, setIncludeClosedAuctions] = useState(false);
 
     useEffect(() => {
         const fetchAuctions = async () => {
@@ -39,7 +40,7 @@ const Home = () => {
         setIsSearching(true);
         const timer = setTimeout(async () => {
             try {
-                const results = await searchAuctions(searchQuery);
+                const results = await searchAuctions(searchQuery, includeClosedAuctions);
                 setSearchResults(results);
             } catch (error) {
                 console.error("Search error:", error);
@@ -48,25 +49,37 @@ const Home = () => {
             }
         }, 400);
 
-        return () => clearTimeout(timer); // cleanup on each keystroke
-    }, [searchQuery]);
+        return () => clearTimeout(timer);
+    }, [searchQuery, includeClosedAuctions]);
 
     const isSearchActive = searchQuery.trim().length > 0;
 
     return (
         <div className="content-container">
             <div className="search-bar-wrapper">
-                <input
-                    className="search-input"
-                    type="text"
-                    placeholder="Search auctions..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                <div className="search-input-row">
+                    <input
+                        className="search-input"
+                        type="text"
+                        placeholder="Search auctions..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {isSearchActive && (
+                        <button className="search-clear" onClick={() => setSearchQuery("")}>✕</button>
+                    )}
+                </div>
                 {isSearchActive && (
-                    <button className="search-clear" onClick={() => setSearchQuery("")}>✕</button>
+                    <label className="search-option-label">
+                        <input
+                            type="checkbox"
+                            checked={includeClosedAuctions}
+                            onChange={(e) => setIncludeClosedAuctions(e.target.checked)}
+                        />
+                        Include closed auctions
+                    </label>
                 )}
-            </div>
+            </div> 
 
             <main className="main-area">
                 {isSearchActive ? (
