@@ -13,6 +13,20 @@ public class UserService
         _userRepo = userRepo;
     }
 
+    public async Task<List<UserFullFlatDto?>> GetAllUsersAsync()
+    {
+        var users = await _userRepo.GetAllUsersAsync();
+        return [.. users.Select(u => new UserFullFlatDto() 
+        { UserId = u.UserId, 
+            FirstName = u.FirstName, 
+            LastName = u.LastName, 
+            Email = u.Email, 
+            IsAdmin = u.UserRoleId == 3, 
+            IsActive = u.IsActive 
+        })];
+
+
+    }
     public async Task<GenericResponseDto> CreateUserAsync(RegisterUserRequestDto userdto)
     {
         var user = new User()
