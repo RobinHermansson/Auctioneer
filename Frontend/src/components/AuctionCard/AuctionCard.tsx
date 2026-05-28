@@ -12,7 +12,7 @@ const AuctionCard = ({ AuctionList }: AuctionProps) => {
     <ul className="auction-list">
       {AuctionList.map(theAuction => (
         <li className="auction-item-card">
-          <AuctionItemCard key={theAuction.auctionId} AuctionItem={theAuction.item} AuctionId={theAuction.auctionId} />
+          <AuctionItemCard key={theAuction.auctionId} AuctionItem={theAuction.item} AuctionId={theAuction.auctionId} isActive={theAuction.isActive} isOpen={theAuction.isOpen} />
         </li>
       ))}
     </ul>
