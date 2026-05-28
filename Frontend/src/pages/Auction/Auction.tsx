@@ -109,7 +109,7 @@ const Auction = () => {
                 }
                 {!canPlaceBid && auction?.isOpen && <p className="own-auction-note">You cannot bid on your own auction.</p>}
                 <p className="auction-end-date">
-                    Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
+                    {!auction?.isOpen ? `Ended: ${formatAuctionEndDate(auction?.endDate ?? "")}` : `Ends: ${formatAuctionEndDate(auction?.endDate ?? "")}`}
                 </p>
                 <h4 className="bid-history-header">Bid history:</h4>
                 {bidsList.length > 0 && <p className="bid-starting-price">Starting price: {auction?.item.price} SEK</p>}
