@@ -193,4 +193,35 @@ public class AuctionService
         await _repo.DeactivateAuctionByIdAsync(auction.AuctionId);
         return new GenericResponseDto() { Success = true, Message = "Deactivated the auction successfully"};
     }
+    public async Task<GenericResponseDto> UpdateAnAuction(int auctionId, UpdateAuctionDto dto, FileUpload? image, int userId)
+    {
+        var foundAuction = await _repo.GetAuctionByIdAsync(auctionId);
+        if (foundAuction is null) return new GenericResponseDto() { Success=false, Message=$"No Auction found with the Id: {auctionId}"};
+        var foundUser = await _userRepository.GetByIdAsync(userId);
+        if (foundUser is null) return new GenericResponseDto() { Success=false, Message=$"No User found with the Id: {userId}"};
+
+        if (userId != foundAuction.OwnerId && foundUser.UserRole.Name != "Admin")
+            return new GenericResponseDto { Success = false, Message = "You are not the owner of this auction nor an Admin." };
+
+        foundAuction.Name = dto.Title;
+        foundAuction.Description = dto.Description;
+        foundAuction.StartingPrice = dto.StartingPrice;
+
+        if (foundAuction.AuctionItem != null)
+        {
+            foundAuction.AuctionItem.Name = dto.ItemName;
+            foundAuction.AuctionItem.AuctionType = dto.AuctionType;
+            foundAuction.AuctionItem.Price = dto.StartingPrice;
+
+            if (image != null)
+            {
+                Console.WriteLine("There is an image.");
+                var imageUrl = await _fileService.SaveFileAsync(image, "auctions");
+                foundAuction.AuctionItem.ImageUrl = imageUrl;
+            }
+        }
+
+        await _repo.UpdateAuctionAsync(foundAuction);
+        return new GenericResponseDto { Success = true, Message = "Updated successfully." };
+    }
 }
