@@ -12,6 +12,6 @@ public interface IAuctionRepository
     Task AddAuctionAsync(Auction auction);
     Task DeleteAuctionAsync(Auction auction);
     Task DeactivateAuctionByIdAsync(int id);
-    Task<IEnumerable<Auction>> SearchAuctionsByTitleAsync(string title);
+    Task<IEnumerable<Auction>> SearchAuctionsByTitleAsync(string title, bool includeClosed);
 
 }

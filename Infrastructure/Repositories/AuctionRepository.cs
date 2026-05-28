@@ -78,15 +78,19 @@ public class AuctionRepository : IAuctionRepository
             Console.WriteLine($"Could not deactivate auction. {ex.Message}");
         }
     }
-    public async Task<IEnumerable<Auction>> SearchAuctionsByTitleAsync(string title)
+    public async Task<IEnumerable<Auction>> SearchAuctionsByTitleAsync(string title, bool includeClosed)
     {
+        var now = DateTime.UtcNow;
         return await _context.Auctions
             .Include(a => a.Owner)
                 .ThenInclude(o => o.UserRole)
             .Include(a => a.AuctionItem)
             .Include(a => a.Bids)
                 .ThenInclude(b => b.Bidder)
-            .Where(a => a.Name.Contains(title))
+            .Where(a => 
+                a.Name.Contains(title) && 
+                !a.IsDeactivated &&
+                (includeClosed || a.EndDate > now)) 
             .ToListAsync();
     }
 }
