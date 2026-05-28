@@ -24,7 +24,8 @@ public class JwtTokenService : ITokenService
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-            new Claim(ClaimTypes.Name, user.Email)
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim("role", user.UserRole.Name ?? "User")
         };
 
         var key = new SymmetricSecurityKey(
