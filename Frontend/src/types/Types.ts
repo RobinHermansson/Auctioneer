@@ -69,6 +69,12 @@ export interface User {
   lastName: string;
   email: string;
 }
+export interface FullUserDetails extends User {
+  userId: number;
+  userRole: string;
+  isActive: boolean;
+  isAdmin: boolean;
+}
 export interface UpdateUserDetailsRequest {
   firstName?: string;
   lastName?: string;
