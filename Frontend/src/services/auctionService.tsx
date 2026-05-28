@@ -30,6 +30,11 @@ export const getBidsByAuctionId = async (id: number): Promise<BidListing[]> => {
     return response.json();
 }
 
+export const searchAuctions = async (title: string): Promise<Auction[]> => {
+    const response = await fetch(`${baseUrl}/search?title=${encodeURIComponent(title)}`);
+    return response.json();
+};
+
 
 // ── Protected endpoints (token required) ────────────────────────────────────
 
