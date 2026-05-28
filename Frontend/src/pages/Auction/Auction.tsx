@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteAuction, getAuctionById, getBidsByAuctionId, getHighestBidById, retractBid } from "../../services/auctionService";
+import { deactivateAuction, deleteAuction, getAuctionById, getBidsByAuctionId, getHighestBidById, retractBid } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction, BidListing } from "../../types/Types";
 import "./Auction.css";
