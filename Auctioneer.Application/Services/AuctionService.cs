@@ -177,7 +177,6 @@ public class AuctionService
         if (auction.EndDate <= DateTime.UtcNow)
             return new GenericResponseDto { Success = false, Message = "Cannot retract a bid on a closed auction." };
 
-        // Check it's the latest bid
         var latestBid = await _bidRepository.GetLatestBidForAuctionAsync(bid.AuctionId);
         if (latestBid?.BidId != bidId)
             return new GenericResponseDto { Success = false, Message = "You can only retract the latest bid." }; 
@@ -223,5 +222,10 @@ public class AuctionService
 
         await _repo.UpdateAuctionAsync(foundAuction);
         return new GenericResponseDto { Success = true, Message = "Updated successfully." };
+    }
+    public async Task<IEnumerable<AuctionDto>> SearchAuctionsAsync(string title)
+    {
+        var auctions = await _repo.SearchAuctionsByTitleAsync(title);
+        return auctions.Select(a => DtoMapper.AuctionToDto(a));
     }
 }
