@@ -77,4 +77,15 @@ public class UserService
         return true;
     }
 
+    public async Task<GenericResponseDto> SetUserActiveStatusAsync(int userId, SetUserActiveDto state)
+    {
+        var foundUser = await _userRepo.GetByIdAsync(userId);
+        if (foundUser is null) return new GenericResponseDto() { Success = false, Message = $"No user with that Id. {userId}" };
+
+        foundUser.IsActive = state.IsActive;
+        var response = await _userRepo.UpdateUserAsync(foundUser);
+        if (response != true) return new GenericResponseDto() { Success=false, Message="Was not able to update active flag for some reason."};
+        return new GenericResponseDto() { Success = true, Message = "Successfully updated the active flag." }; 
+    }
+
 }

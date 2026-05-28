@@ -24,4 +24,12 @@ public class AdminController : ControllerBase
 
         return Ok(await _userService.GetAllUsersAsync());
     }
+    
+    [Authorize(Roles = "Admin")]
+    [HttpPatch("users/{userId}/active")]
+    public async Task<ActionResult> SetUserActiveStatus(int userId, [FromBody] SetUserActiveDto dto)
+    {
+        var result = await _userService.SetUserActiveStatusAsync(userId, dto);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
 }
