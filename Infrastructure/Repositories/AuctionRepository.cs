@@ -33,6 +33,8 @@ public class AuctionRepository : IAuctionRepository
     public async Task UpdateAuctionAsync(Auction auction)
     {
         _context.Auctions.Update(auction);
+        if (auction.AuctionItem != null)
+            _context.Update(auction.AuctionItem);
         await _context.SaveChangesAsync();
 
     }
