@@ -86,3 +86,17 @@ export const deactivateAuction = async (auctionId: number): Promise<GenericRespo
     });
     return response.json();
 }
+
+export const editAuction = async (auctionId: number, formData: FormData): Promise<GenericResponse> => {
+    
+    const response = await fetch(`${baseUrl}/edit/${auctionId}`, {
+        method: "PATCH",
+        headers: authHeaders(),
+        body: formData
+    });
+    if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(errText || 'Failed to edit auction');
+    }
+    return response.json();
+};
