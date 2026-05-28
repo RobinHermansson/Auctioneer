@@ -223,9 +223,9 @@ public class AuctionService
         await _repo.UpdateAuctionAsync(foundAuction);
         return new GenericResponseDto { Success = true, Message = "Updated successfully." };
     }
-    public async Task<IEnumerable<AuctionDto>> SearchAuctionsAsync(string title)
+    public async Task<IEnumerable<AuctionDto>> SearchAuctionsAsync(string title, bool includeClosed)
     {
-        var auctions = await _repo.SearchAuctionsByTitleAsync(title);
+        var auctions = await _repo.SearchAuctionsByTitleAsync(title, includeClosed);
         return auctions.Select(a => DtoMapper.AuctionToDto(a));
-    }
+    }    
 }
