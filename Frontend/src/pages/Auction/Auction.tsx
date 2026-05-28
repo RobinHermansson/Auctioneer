@@ -38,7 +38,6 @@ const Auction = () => {
 
     useEffect(() => {
         if (!auction || !userId) {
-            console.log(`${userId}, ${auction?.owner.userId}`)
             setCanPlaceBid(false);
             return;
         }
