@@ -45,7 +45,7 @@ const Auction = () => {
         setCanPlaceBid(auction.owner.userId !== userId);
     }, [auction, userId]);
     useEffect(() => {
-        setCanDelete(bidsList.length <= 0 && auction?.owner.userId === userId);
+        setCanDelete(bidsList.length <= 0 && auction?.owner.userId === userId && auction.isOpen);
     }, [bidsList, auction, userId])
     const handleDeleteAuctionClick = () => setModalAction("delete");
     const handleConfirmDelete = async () => {
@@ -150,7 +150,7 @@ const Auction = () => {
                                     {isUsersBid ? "You bid:" : "Bid:"} <strong>{bid.amount} SEK</strong>
                                 </span>
                                 <span className="bid-date">{new Date(bid.timestamp).toLocaleString("sv-SE")}</span>
-                                {isOwnBid && (
+                                {isOwnBid && auction?.isOpen && (
                                     <span className="retract-bid-span" onClick={() => {
                                         setBidToRetract(bid.bidId);
                                         setModalAction("retract");
