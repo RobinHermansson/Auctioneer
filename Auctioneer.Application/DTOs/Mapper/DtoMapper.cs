@@ -13,6 +13,7 @@ public static class DtoMapper
             StartDate = auction.StartDate,
             EndDate = auction.EndDate,
             IsActive = auction.IsActive,
+            IsDeactivated = auction.IsDeactivated,
             IsOpen = auction.IsOpen,
             StartingPrice = auction.StartingPrice,
 

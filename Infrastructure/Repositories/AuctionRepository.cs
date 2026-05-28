@@ -16,7 +16,7 @@ public class AuctionRepository : IAuctionRepository
 
     public async Task<IEnumerable<Auction>> GetAllAuctionsAsync()
     {
-        return await _context.Auctions.Include(a => a.AuctionItem).Include(a => a.Owner).Include(b => b.Bids).ThenInclude(bi=> bi.Bidder).ToListAsync();
+        return await _context.Auctions.Include(a => a.AuctionItem).Include(a => a.Owner).Include(b => b.Bids).ThenInclude(bi=> bi.Bidder).Where(a =>!a.IsDeactivated).ToListAsync();
     }
 
     public async Task<IEnumerable<Auction?>> GetAllAuctionsForUserIdAsync(int id)
@@ -69,7 +69,7 @@ public class AuctionRepository : IAuctionRepository
         {
             var auction = await _context.Auctions.FindAsync(id);
             if (auction is null) return;
-            auction.IsActive = false;
+            auction.IsDeactivated = true;
             _context.Auctions.Update(auction);
             await _context.SaveChangesAsync();
         }
