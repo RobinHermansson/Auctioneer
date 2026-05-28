@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./BidModal.css";    
 import { addBidToAuction } from "../../services/auctionService";
+import { useToast } from "../../context/ToastContext";
 interface BidModalProps {
     auctionCost: number;
     auctionId : number;
@@ -8,19 +9,18 @@ interface BidModalProps {
 }
 const BidModal = ({ auctionCost,auctionId, onClose }: BidModalProps) => {
     const [bidAmount, setBidAmount] = useState(auctionCost);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const {showToast} = useToast();
     const onSubmitBid = async () => {
         const response = await addBidToAuction({
             auctionId: auctionId,
             amount: bidAmount
         });
         if (response.success) {
-            setSuccessMessage(response.message);
-            setErrorMessage("");
+            showToast("Bid placed successfully", "success");
+            onClose();
         } else {
-            setErrorMessage(response.message);
-            setSuccessMessage("");
+            showToast("Failed to place bid", "error");
+            onClose();
         }
     }
     return (
@@ -44,8 +44,6 @@ const BidModal = ({ auctionCost,auctionId, onClose }: BidModalProps) => {
                             value={bidAmount}
                             onChange={(e) => setBidAmount(Number(e.target.value))}
                         />
-                        {errorMessage && <p className="error-message">{errorMessage}</p>}
-                        {successMessage && <p className="success-message">{successMessage}</p>}
                         <button disabled={bidAmount <= auctionCost} className="bid-button" onClick={onSubmitBid}>
                             Submit
                         </button>
