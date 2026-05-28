@@ -5,6 +5,7 @@ using Auctioneer.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace Auctioneer.API.Controllers;
@@ -150,12 +151,39 @@ public class AuctionController : ControllerBase
     [HttpPatch("admin/deactivate/{id}")]
     public async Task<ActionResult<GenericResponseDto>> DeactivateAuction(int id) 
     {
-        
-
         var result = await _service.DeactivateAuctionByIdAsync(id);
         return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [Authorize]
+    [HttpPatch("edit/{auctionId}")]
+    public async Task<ActionResult<GenericResponseDto>> UpdateAnAuction(int auctionId, [FromForm] UpdateAuctionDto dto, IFormFile? image)    {
+        if (User.GetUserId() is not int userId) return Unauthorized();
+        try
+        {
+            FileUpload fileUpload = null;
+
+            if (image != null)
+            {
+                using var ms = new MemoryStream();
+                await image.CopyToAsync(ms);
+                fileUpload = new FileUpload
+                {
+
+                    Content = ms.ToArray(),
+                    FileName = image.FileName,
+                    ContentType = image.ContentType
+                };
+            }
+            var result = await _service.UpdateAnAuction(auctionId, dto, fileUpload, userId);
+            return result.Success ? Ok(result) : BadRequest();
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine($"Could not update auction. {ex.Message}");
+            return BadRequest(new GenericResponseDto() { Success = false, Message = "Not able to update auction."});
+        }
 
 
-        
     }
 }
