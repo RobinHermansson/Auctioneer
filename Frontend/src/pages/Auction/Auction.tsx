@@ -92,8 +92,8 @@ const Auction = () => {
                 <button className="back-button" onClick={() => navigate("/")}>← Back to auctions</button>
                 
                 <div className="page-header-actions">
-                    {(isAdmin || auction?.owner.userId === userId) && (
-                        <button className="btn-edit" onClick={() => navigate(`/auction/${auctionId}/edit`)}>
+                        {(isAdmin || (auction?.owner.userId === userId && auction.isOpen && bidsList.length === 0)) && (
+                        <button className="btn-edit" onClick={() => navigate(`/auction/edit/${auction?.auctionId}`)}>
                             Edit
                         </button>
                     )}
