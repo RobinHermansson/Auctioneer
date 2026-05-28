@@ -23,6 +23,7 @@ public class LoginService
         {
             return new LoginResponseDto() { Success = false };
         }
+        if (!user.IsActive) return new LoginResponseDto { Success = false };
         return new LoginResponseDto() { Success = true, Token=_tokenService.CreateToken(user) };
     }
 }
