@@ -14,3 +14,11 @@ export const getAllUsers = async (): Promise<FullUserDetails[]>=> {
     });
     return response.json();
 };
+export const setUserActiveStatus = async (userId: number, isActive: boolean): Promise<void> => {
+    const response = await fetch(`${baseUrl}/users/${userId}/active`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", ...authHeaders() },
+        body: JSON.stringify({ isActive })
+    });
+    if (!response.ok) throw new Error("Failed to update user status.");
+};
