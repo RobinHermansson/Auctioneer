@@ -146,4 +146,16 @@ public class AuctionController : ControllerBase
         var response = await _service.RetractBidAsync(bidId, userId);
         return response.Success ? Ok(response) : BadRequest(response);
     }
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("admin/deactivate/{id}")]
+    public async Task<ActionResult<GenericResponseDto>> DeactivateAuction(int id) 
+    {
+        
+
+        var result = await _service.DeactivateAuctionByIdAsync(id);
+        return result.Success ? Ok(result) : BadRequest(result);
+
+
+        
+    }
 }
