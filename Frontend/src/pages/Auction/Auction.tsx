@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteAuction, getAuctionById, getBidsByAuctionId, getHighestBidById } from "../../services/auctionService";
+import { deleteAuction, getAuctionById, getBidsByAuctionId, getHighestBidById, retractBid } from "../../services/auctionService";
 import formatAuctionEndDate from "../../services/dateService";
 import type { Auction, BidListing } from "../../types/Types";
 import "./Auction.css";
@@ -18,11 +18,12 @@ const Auction = () => {
     const [showModal, setShowBidModal] = useState(false);
     const [canPlaceBid, setCanPlaceBid] = useState(false);
     const [bidsList, setBidsList] = useState<BidListing[]>([]);
-    const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);    
     const [canDelete, setCanDelete] = useState(false);
-    const [canRetractBid, setCanRetractBid] = useState(false);
-    const {token, userId} = useAuth();
+    const { userId } = useAuth();
+    const [bidToRetract, setBidToRetract] = useState<number | null>(null);
     const {showToast} = useToast();
+    const [modalAction, setModalAction] = useState<"delete" | "retract" | null>(null);
+    const latestBidId = bidsList.length > 0  ? bidsList[bidsList.length - 1].bidId : null;
     useEffect(() => {
         const fetchData = async () => {
             const response = await getAuctionById(parseInt(auctionId!));
@@ -45,22 +46,35 @@ const Auction = () => {
     }, [auction, userId]);
     useEffect(() => {
         setCanDelete(bidsList.length <= 0 && auction?.owner.userId === userId);
-        setCanRetractBid(bidsList.some(bid => bid.bidderId === userId && bid.amount >= highestBid));
-    }, [bidsList])
-    const handleDeleteAuctionClick = () => {
-        setShowConfirmCancelModal(true);
-
-    }
+    }, [bidsList, auction, userId])
+    const handleDeleteAuctionClick = () => setModalAction("delete");
     const handleConfirmDelete = async () => {
-        try{
+        try {
             await deleteAuction(auction!.auctionId);
-            showToast("Auction deleted successfully", "success");   
+            showToast("Auction deleted successfully", "success");
             navigate("/");
-        }catch (error) {
+        } catch {
             showToast("Error deleting auction", "error");
-            console.error("Error deleting auction:", error);
+        } finally {
+            setModalAction(null);
         }
-    }
+    };
+
+    const handleConfirmRetractBid = async () => {
+        try {
+            await retractBid(bidToRetract!);
+            showToast("Bid retracted successfully", "success");
+            
+            const bidsResponse = await getBidsByAuctionId(parseInt(auctionId!));
+            setBidsList(bidsResponse);
+            const highestBidResponse = await getHighestBidById(parseInt(auctionId!));
+            setHighestbid(highestBidResponse);
+        } catch {
+            showToast("Error retracting bid", "error");
+        } finally {
+            setModalAction(null);
+        }
+    };
     return (
         <div className="main-div">
             <div className="page-header">
@@ -101,24 +115,26 @@ const Auction = () => {
                     {bidsList.length === 0 && <p>No bids placed yet.</p>}
                     <ul className="bids-list">
                         {bidsList.map((bid) => {
-                            const latestBidId = bidsList.length > 0 
-                            ? bidsList[bidsList.length - 1].bidId 
-                            : null;
-                            const isOwnBid = bid.bidderId === userId && bid.bidId === latestBidId;
-                            const isUsersBid = bid.bidderId === userId;
+                        const isOwnBid = bid.bidderId === userId && bid.bidId === latestBidId;
+                        const isUsersBid = bid.bidderId === userId;
 
-                            return (
-                                <li key={bid.bidId} className={`bid-item ${isUsersBid ? "bid-item-own" : ""}`}>
-                                    <span className="bid-amount">
-                                        {isUsersBid ? "You bid:" : "Bid:"} <strong>{bid.amount} SEK</strong>
+                        return (
+                            <li key={bid.bidId} className={`bid-item ${isUsersBid ? "bid-item-own" : ""}`}>
+                                <span className="bid-amount">
+                                    {isUsersBid ? "You bid:" : "Bid:"} <strong>{bid.amount} SEK</strong>
+                                </span>
+                                <span className="bid-date">{new Date(bid.timestamp).toLocaleString("sv-SE")}</span>
+                                {isOwnBid && (
+                                    <span className="retract-bid-span" onClick={() => {
+                                        setBidToRetract(bid.bidId);
+                                        setModalAction("retract");
+                                    }}>
+                                        Retract bid
                                     </span>
-                                    <span className="bid-date">{new Date(bid.timestamp).toLocaleString("sv-SE")}</span>
-                                    {isOwnBid && (
-                                        <span className="retract-bid-span">Retract bid</span>
-                                    )}
-                                </li>
-                            );
-                        })} 
+                                )}
+                            </li>
+                        );
+                    })} 
                     </ul>
                 </div>
                 {auction?.owner.userId === userId && 
@@ -131,14 +147,26 @@ const Auction = () => {
             </aside>
             </div>
             {showModal && <BidModal auctionCost={highestBid <= 0 ? auction?.startingPrice! : highestBid} auctionId={auction?.auctionId!} onClose={() => setShowBidModal(false)} />}
-                {showConfirmCancelModal && <ConfirmCancelActionModal 
-                    title="Delete Auction"
-                    confirmButtonText="Yes, delete!"
-                    cancelButtonText="No. Cancel"
-                    message="Are you sure you want to delete this auction?"
-                    onConfirm={handleConfirmDelete}
-                    onCancel={() => setShowConfirmCancelModal(false)}
-                />}
+            {modalAction === "delete" && (
+            <ConfirmCancelActionModal
+                title="Delete Auction"
+                confirmButtonText="Yes, delete!"
+                cancelButtonText="Cancel"
+                message="Are you sure you want to delete this auction?"
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setModalAction(null)}
+            />
+            )}
+            {modalAction === "retract" && (
+                <ConfirmCancelActionModal
+                    title="Retract Bid"
+                    confirmButtonText="Yes, retract!"
+                    cancelButtonText="Cancel"
+                    message="Are you sure you want to retract this bid?"
+                    onConfirm={handleConfirmRetractBid}
+                    onCancel={() => setModalAction(null)}
+                />
+            )}
         </div>
     )
 }
