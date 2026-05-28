@@ -1,4 +1,5 @@
-﻿using Auctioneer.Application.DTOs;
+﻿using Auctioneer.API.Extensions;
+using Auctioneer.Application.DTOs;
 using Auctioneer.Application.Models;
 using Auctioneer.Application.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -135,5 +136,14 @@ public class AuctionController : ControllerBase
         var bids = await _service.GetAllBidsForAuctionIdAsync(id);
         return Ok(bids);
 
+    }
+    [Authorize]
+    [HttpDelete("retract/{bidId}")]
+    public async Task<ActionResult<GenericResponseDto>> RetractBid(int bidId)
+    {
+        if (User.GetUserId() is not int userId) return Unauthorized();
+        
+        var response = await _service.RetractBidAsync(bidId, userId);
+        return response.Success ? Ok(response) : BadRequest(response);
     }
 }
