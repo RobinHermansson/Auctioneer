@@ -84,6 +84,8 @@ const EditAuction = () => {
 
     return (
         <div className="edit-auction-container">
+
+            <button className="back-button" onClick={() => navigate("/")}>← Back to Home</button>
             <h2>edit Auction</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit} className="edit-auction-form">
