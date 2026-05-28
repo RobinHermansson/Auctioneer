@@ -41,6 +41,8 @@ builder.Services.AddAuthentication(options =>
         options.MapInboundClaims = false; // disable automatic remapping
         options.TokenValidationParameters = new TokenValidationParameters
         {
+            RoleClaimType = "role",
+            NameClaimType = "sub",
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
             ValidateIssuer = false,
