@@ -134,34 +134,45 @@ const Auction = () => {
                 <p className="auction-end-date">
                     {!auction?.isOpen ? `Ended: ${formatAuctionEndDate(auction?.endDate ?? "")}` : `Ends: ${formatAuctionEndDate(auction?.endDate ?? "")}`}
                 </p>
-                <h4 className="bid-history-header">Bid history:</h4>
-                {bidsList.length > 0 && <p className="bid-starting-price">Starting price: {auction?.item.price} SEK</p>}
-                <div className="bid-history-section">
-                    {bidsList.length === 0 && <p>No bids placed yet.</p>}
-                    <ul className="bids-list">
-                        {bidsList.map((bid) => {
-                        const isOwnBid = bid.bidderId === userId && bid.bidId === latestBidId;
-                        const isUsersBid = bid.bidderId === userId;
+                {auction?.isOpen && (
+                    <>
+                        <h4 className="bid-history-header">Bid history:</h4>
+                        {bidsList.length > 0 && <p className="bid-starting-price">Starting price: {auction?.item.price} SEK</p>}
+                        <div className="bid-history-section">
+                            {bidsList.length === 0 && <p>No bids placed yet.</p>}
+                            <ul className="bids-list">
 
-                        return (
-                            <li key={bid.bidId} className={`bid-item ${isUsersBid ? "bid-item-own" : ""}`}>
-                                <span className="bid-amount">
-                                    {isUsersBid ? "You bid:" : "Bid:"} <strong>{bid.amount} SEK</strong>
-                                </span>
-                                <span className="bid-date">{new Date(bid.timestamp).toLocaleString("sv-SE")}</span>
-                                {isOwnBid && auction?.isOpen && (
-                                    <span className="retract-bid-span" onClick={() => {
-                                        setBidToRetract(bid.bidId);
-                                        setModalAction("retract");
-                                    }}>
-                                        Retract bid
+                            {bidsList.map((bid) => {
+                            const isOwnBid = bid.bidderId === userId && bid.bidId === latestBidId;
+                            const isUsersBid = bid.bidderId === userId;
+
+                            return (
+                                <li key={bid.bidId} className={`bid-item ${isUsersBid ? "bid-item-own" : ""}`}>
+                                    <span className="bid-amount">
+                                        {isUsersBid ? "You bid:" : "Bid:"} <strong>{bid.amount} SEK</strong>
                                     </span>
-                                )}
-                            </li>
-                        );
-                    })} 
-                    </ul>
-                </div>
+                                    <span className="bid-date">{new Date(bid.timestamp).toLocaleString("sv-SE")}</span>
+                                    {isOwnBid && auction?.isOpen && (
+                                        <span className="retract-bid-span" onClick={() => {
+                                            setBidToRetract(bid.bidId);
+                                            setModalAction("retract");
+                                        }}>
+                                            Retract bid
+                                        </span>
+                                    )}
+                                </li>
+                            );
+                        })} 
+                        </ul>
+                    </div>
+                    </>
+                )}
+                {!auction?.isOpen && (
+                    <div className="closed-auction-result">
+                        <h4>Winning bid</h4>
+                        <p className="auction-price">{highestBid > 0 ? `${highestBid} SEK` : "No bids were placed"}</p>
+                    </div>
+                )}
                 {auction?.owner.userId === userId && 
                 <button className="delete-auction" disabled={!canDelete} onClick={handleDeleteAuctionClick}>
                     Delete this auction
