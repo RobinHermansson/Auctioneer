@@ -80,3 +80,8 @@ export interface BidListing {
   timestamp: string;
 }
 
+export interface GenericResponse {
+  success: boolean;
+  message: string;
+}
+
