@@ -186,4 +186,10 @@ public class AuctionController : ControllerBase
 
 
     }
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<AuctionDto>>> SearchAuctions([FromQuery] string title)
+    {
+        var results = await _service.SearchAuctionsAsync(title);
+        return Ok(results);
+    }
 }
