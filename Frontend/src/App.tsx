@@ -18,6 +18,9 @@ function App() {
     <div className={`app-layout ${isCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}`}>
       <NavBar isCollapsed={isCollapsed} onToggle={() => setIsCollapsed(!isCollapsed)} />
       <main className="main-content">
+        <header>
+          <h1 className="main-header">Auctioneer</h1>
+        </header>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auction/:auctionId" element={<Auction />} />

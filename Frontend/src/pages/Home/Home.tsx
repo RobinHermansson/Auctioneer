@@ -28,11 +28,7 @@ const Home = () => {
 
     return (
         <>
-            <header>
-                <h1 className="main-header">Auctioneer</h1>
-            </header>
             <div className="content-container">
-
             <main className="main-area">
                 {token && 
                 <section>
