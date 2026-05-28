@@ -103,9 +103,11 @@ const Auction = () => {
                     {bidsList.length > 0 ? `Highest bid:` : `Starting price:`}
                 </p>
                 <p className="auction-price">{highestBid ? highestBid >0 ? highestBid : auction?.item.price : auction?.item.price} SEK</p>
-                <button disabled={!canPlaceBid} className="bid-button" onClick={() => setShowBidModal(true)}>
-                    Place a bid
-                </button>
+                {auction?.isOpen 
+                    ? <button disabled={!canPlaceBid} className="bid-button" onClick={() => setShowBidModal(true)}>Place a bid</button>
+                    : <p className="auction-closed-badge">Auction closed</p>
+                }
+                {!canPlaceBid && auction?.isOpen && <p className="own-auction-note">You cannot bid on your own auction.</p>}
                 <p className="auction-end-date">
                     Ends: {formatAuctionEndDate(auction?.endDate ?? "")}
                 </p>

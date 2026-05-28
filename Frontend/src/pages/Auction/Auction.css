@@ -169,6 +169,7 @@
     font-size: 0.8rem;
 }
 
+
 .retract-bid-span {
     color: #d32f2f;
     font-size: 0.8rem;
@@ -196,7 +197,7 @@
     background-color: #cccccc;
     cursor: not-allowed;
 }
-.delete-auction-note {
+.delete-auction-note, .own-auction-note {
     font-size: 0.8rem;
     color: #b46161;
     margin-top: 0.1rem;
