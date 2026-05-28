@@ -1,4 +1,4 @@
-import type { AddBidRequest, AddBidResponse, Auction, BidListing } from "../types/Types";
+import type { AddBidRequest, AddBidResponse, Auction, BidListing, GenericResponse } from "../types/Types";
 
 const baseUrl = 'https://localhost:7029/api/Auction';
 
@@ -29,6 +29,7 @@ export const getBidsByAuctionId = async (id: number): Promise<BidListing[]> => {
     const response = await fetch(`${baseUrl}/bids/${id}`);
     return response.json();
 }
+
 
 // ── Protected endpoints (token required) ────────────────────────────────────
 
@@ -70,4 +71,11 @@ export const deleteAuction = async (auctionId: number): Promise<void> => {
         const errText = await response.text();
         throw new Error(errText || 'Failed to delete auction');
     }
+};
+export const retractBid = async (bidId: number): Promise<GenericResponse> => {
+    const response = await fetch(`${baseUrl}/retract/${bidId}`, {
+        method: "DELETE",
+        headers: authHeaders()
+    });
+    return response.json();
 };
