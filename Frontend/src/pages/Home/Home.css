@@ -31,3 +31,47 @@ section h2 {
     padding-bottom: 5px;
     margin-top: 0;
 }
+
+.search-bar-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 2rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.search-clear {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: #888;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-clear:hover {
+    color: #000;
+}
+
+.no-results {
+    color: #888;
+    font-style: italic;
+}
