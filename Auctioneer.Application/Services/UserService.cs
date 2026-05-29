@@ -34,7 +34,8 @@ public class UserService
             FirstName = userdto.FirstName,
             LastName = userdto.LastName,
             Email = userdto.Email,
-            UserRoleId = 4
+            UserRoleId = 4,
+            IsActive = true
         };
         user.Password = BCrypt.Net.BCrypt.HashPassword(userdto.Password);
 
