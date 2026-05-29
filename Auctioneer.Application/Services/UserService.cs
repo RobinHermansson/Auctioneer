@@ -34,9 +34,9 @@ public class UserService
             FirstName = userdto.FirstName,
             LastName = userdto.LastName,
             Email = userdto.Email,
-            Password = userdto.Password,
             UserRoleId = 4
         };
+        user.Password = BCrypt.Net.BCrypt.HashPassword(userdto.Password);
 
         if (await _userRepo.AddUserAsync(user))
         {
@@ -71,7 +71,7 @@ public class UserService
             return false;
         if (updatedUser.FirstName != null) foundUser.FirstName = updatedUser.FirstName;
         if (updatedUser.LastName != null) foundUser.LastName = updatedUser.LastName;
-        if (updatedUser.Password != null && updatedUser.Password != foundUser.Password) foundUser.Password = updatedUser.Password;
+        if (updatedUser.Password != null && updatedUser.Password != foundUser.Password) foundUser.Password = BCrypt.Net.BCrypt.HashPassword(updatedUser.Password);
 
         await _userRepo.UpdateUserAsync(foundUser);
         return true;

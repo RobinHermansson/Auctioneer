@@ -17,13 +17,16 @@ public class LoginService
     public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
     {
         var user = await _repo.GetByEmailAsync(loginRequestDto.Email);
+
         if (user == null)
-            return new LoginResponseDto() { Success = false };
-        if (user.Password != loginRequestDto.Password)
-        {
-            return new LoginResponseDto() { Success = false };
-        }
-        if (!user.IsActive) return new LoginResponseDto { Success = false };
-        return new LoginResponseDto() { Success = true, Token=_tokenService.CreateToken(user) };
+            return new LoginResponseDto { Success = false };
+
+        if (!BCrypt.Net.BCrypt.Verify(loginRequestDto.Password, user.Password))
+            return new LoginResponseDto { Success = false };
+
+        if (!user.IsActive)
+            return new LoginResponseDto { Success = false };
+
+        return new LoginResponseDto { Success = true, Token = _tokenService.CreateToken(user) };    
     }
 }
